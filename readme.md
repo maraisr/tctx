@@ -72,7 +72,7 @@ Validation :: make
 
 Benchmark :: make
   tctx                x 184,080 ops/sec ±1.89% (84 runs sampled)
-  TraceParent            x 50,235 ops/sec ±4.09% (79 runs sampled)
+  TraceParent          x 50,235 ops/sec ±4.09% (79 runs sampled)
 
 Validation :: parse
 ✔ tctx
@@ -80,7 +80,7 @@ Validation :: parse
 
 Benchmark :: parse
   tctx                x 3,935,779 ops/sec ±0.50% (92 runs sampled)
-  TraceParent            x 117,942 ops/sec ±4.11% (78 runs sampled)
+  TraceParent           x 117,942 ops/sec ±4.11% (78 runs sampled)
 
 Validation :: child
 ✔ tctx
@@ -88,7 +88,7 @@ Validation :: child
 
 Benchmark :: child
   tctx                x 101,445 ops/sec ±1.79% (68 runs sampled)
-  TraceParent            x 38,751 ops/sec ±2.62% (76 runs sampled)
+  TraceParent          x 38,751 ops/sec ±2.62% (76 runs sampled)
 ```
 
 ## License
