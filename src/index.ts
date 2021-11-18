@@ -22,14 +22,18 @@ export interface Traceparent {
  version (2 hex)
 */
 
+const trace_id_size = 16;
+const parent_id_size = 8;
 
-const trace_id_size = 16,
-	parent_id_size = 8;
-const default_version = "00";
-const sampled_flag = "00";
+const W3C_TRACEPARENT_VERSION = '00';
+const sampled_flag = '00';
 
-
-const traceparent = (version:string, trace_id:string, parent_id: string, flags:string): Traceparent => ({
+const traceparent = (
+	version: string,
+	trace_id: string,
+	parent_id: string,
+	flags: string,
+): Traceparent => ({
 	version,
 	trace_id,
 	parent_id,
@@ -38,27 +42,33 @@ const traceparent = (version:string, trace_id:string, parent_id: string, flags:s
 	child() {
 		const new_buf = new Uint8Array(parent_id_size);
 		fill_random(new_buf, 0, parent_id_size);
-		return traceparent(this.version, this.trace_id, toHEX(new_buf), this.flags);
+		return traceparent(
+			this.version,
+			this.trace_id,
+			toHEX(new_buf),
+			this.flags,
+		);
 	},
 
 	toString() {
 		return `${this.version}-${this.trace_id}-${this.parent_id}-${this.flags}`;
 	},
-})
+});
 
 export const make = (): Traceparent => {
-	const total_size = trace_id_size + parent_id_size
+	const total_size = trace_id_size + parent_id_size;
 	const buf = new Uint8Array(total_size);
 	fill_random(buf, 0, total_size);
 	return traceparent(
-		default_version,
+		W3C_TRACEPARENT_VERSION,
 		toHEX(buf.slice(0, trace_id_size)),
 		toHEX(buf.slice(trace_id_size, total_size)),
-		sampled_flag);
+		sampled_flag,
+	);
 };
 
 export const parse = (value: string) => {
 	if (value.length > 55) return null;
 	const segs = value.split('-');
-	return traceparent(segs[0],segs[1],segs[2],segs[3]);
+	return traceparent(segs[0], segs[1], segs[2], segs[3]);
 };
