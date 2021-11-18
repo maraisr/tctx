@@ -11,34 +11,33 @@
 	],
 	"repository": "maraisr/t",
 	"license": "MIT",
-	"type": "module",
 	"author": {
 		"name": "Marais Rossouw",
 		"email": "me@marais.dev",
 		"url": "https://marais.io"
 	},
 	"sideEffects": false,
+	"type": "module",
 	"imports": {
 		"#hex": {
 			"node": "./imports/hex/node.js",
 			"default": "./imports/hex/default.js"
 		}
 	},
-	"files": [
-		"imports/**/*"
-	],
 	"exports": {
-		".": {
-			"import": "./index.mjs",
-			"require": "./index.js"
-		},
+		".": "./index.mjs",
 		"./package.json": "./package.json"
 	},
-	"main": "./index.js",
-	"module": "./index.mjs",
+	"main": "./index.mjs",
 	"types": "index.d.ts",
+	"files": [
+		"index.mjs",
+		"index.d.ts",
+		"imports/**/*"
+	],
 	"scripts": {
 		"bench": "node -r tsm bench/index.ts",
+		"build": "rollup -c",
 		"format": "prettier  --write --list-different \"{*,src/**/*,test/*,bench/*,.github/**/*}.+(ts|json|yml|md)\"",
 		"test": "uvu test \".spec.ts$\" -r tsm",
 		"typecheck": "tsc --noEmit  --skipLibCheck"
@@ -46,14 +45,14 @@
 	"devDependencies": {
 		"@marais/tsconfig": "0.0.1",
 		"@types/node": "16.11.7",
+		"esbuild": "0.13.14",
 		"prettier": "2.4.1",
+		"rollup": "2.58.0",
+		"rollup-plugin-dts": "4.0.0",
 		"tsm": "2.1.4",
 		"typescript": "4.5.2",
-		"worktop": "0.8.0-next.8",
-		"uvu": "0.5.2"
-	},
-	"volta": {
-		"node": "16.12.0"
+		"uvu": "0.5.2",
+		"worktop": "0.8.0-next.8"
 	},
 	"peerDependencies": {
 		"worktop": "0.8.0-next.8"
@@ -62,5 +61,8 @@
 		"worktop": {
 			"optional": true
 		}
+	},
+	"volta": {
+		"node": "16.12.0"
 	}
 }

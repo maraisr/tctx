@@ -15,7 +15,6 @@ export interface Traceparent {
  00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
  ^  ^                                ^                ^ 
  |  |                                |                |
- |  |                                |                |
  |  |                                |                flags (2 hex)
  |  |                                parent-id (16 hex)
  |  trace-id (32 hex)
@@ -31,17 +30,16 @@ const v_offset = 0,
 	p_offset = t_offset + t_size,
 	f_offset = p_offset + p_size;
 
+/*#__INLINE__*/
 const set_random_values = /*#__PURE__*/ (
 	buf: Uint8Array,
 	offset: number,
 	end: number,
 ) => crypto.getRandomValues(buf.subarray(offset, offset + end));
 
-const slice = /*#__INLINE__*/ (
-	buf: Uint8Array,
-	offset: number,
-	end?: number,
-): string => toHEX(buf.slice(offset, end));
+/*#__INLINE__*/
+const slice = (buf: Uint8Array, offset: number, end?: number): string =>
+	toHEX(buf.slice(offset, end));
 
 const traceparent = (buf: Uint8Array) => ({
 	get version() {
