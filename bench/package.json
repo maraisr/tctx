@@ -1,0 +1,8 @@
+{
+	"private": true,
+	"dependencies": {
+		"@types/benchmark": "2.1.1",
+		"benchmark": "2.1.4",
+		"traceparent": "1.0.0"
+	}
+}

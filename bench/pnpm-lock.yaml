@@ -1,0 +1,42 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@types/benchmark': 2.1.1
+  benchmark: 2.1.4
+  traceparent: 1.0.0
+
+dependencies:
+  '@types/benchmark': 2.1.1
+  benchmark: 2.1.4
+  traceparent: 1.0.0
+
+packages:
+
+  /@types/benchmark/2.1.1:
+    resolution: {integrity: sha512-XmdNOarpSSxnb3DE2rRFOFsEyoqXLUL+7H8nSGS25vs+JS0018bd+cW5Ma9vdlkPmoTHSQ6e8EUFMFMxeE4l+g==}
+    dev: false
+
+  /benchmark/2.1.4:
+    resolution: {integrity: sha1-CfPeMckWQl1JjMLuVloOvzwqVik=}
+    dependencies:
+      lodash: 4.17.21
+      platform: 1.3.6
+    dev: false
+
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
+  /platform/1.3.6:
+    resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
+    dev: false
+
+  /random-poly-fill/1.0.1:
+    resolution: {integrity: sha512-bMOL0hLfrNs52+EHtIPIXxn2PxYwXb0qjnKruTjXiM/sKfYqj506aB2plFwWW1HN+ri724bAVVGparh4AtlJKw==}
+    dev: false
+
+  /traceparent/1.0.0:
+    resolution: {integrity: sha512-b/hAbgx57pANQ6cg2eBguY3oxD6FGVLI1CC2qoi01RmHR7AYpQHPXTig9FkzbWohEsVuHENZHP09aXuw3/LM+w==}
+    dependencies:
+      random-poly-fill: 1.0.1
+    dev: false
