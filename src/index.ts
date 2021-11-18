@@ -42,19 +42,11 @@ const slice = (buf: Uint8Array, offset: number, end?: number): string =>
 	toHEX(buf.slice(offset, end));
 
 const traceparent = (buf: Uint8Array) => ({
-	get version() {
-		return slice(buf, v_offset, t_offset);
-	},
-	get trace_id() {
-		return slice(buf, t_offset, p_offset);
-	},
-	get parent_id() {
-		return slice(buf, p_offset, f_offset);
-	},
+	version: slice(buf, v_offset, t_offset),
+	trace_id: slice(buf, t_offset, p_offset),
+	parent_id: slice(buf, p_offset, f_offset),
 	// TODO: flags should be binary 0b00000000
-	get flags() {
-		return slice(buf, f_offset);
-	},
+	flags: slice(buf, f_offset),
 
 	child() {
 		const new_buf = new Uint8Array(buf);
