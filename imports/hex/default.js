@@ -1,1 +1,1 @@
-export { toHEX, asHEX } from 'worktop/buffer';
+export { toHEX } from 'worktop/buffer';
