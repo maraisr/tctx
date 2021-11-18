@@ -4,10 +4,7 @@ import * as assert from 'uvu/assert';
 import * as trcprnt from '../src';
 import TraceParent from 'traceparent';
 
-import { webcrypto, randomBytes } from 'node:crypto';
-
-// @ts-ignore
-globalThis.crypto = webcrypto;
+import { randomBytes } from 'node:crypto';
 
 function runner(
 	name: string,

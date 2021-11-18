@@ -71,24 +71,24 @@ Validation :: make
 ✔ TraceParent
 
 Benchmark :: make
-  trcprnt                x 121,580 ops/sec ±0.88% (87 runs sampled)
-  TraceParent            x 51,780 ops/sec ±3.56% (81 runs sampled)
+  trcprnt                x 117,727 ops/sec ±1.65% (83 runs sampled)
+  TraceParent            x 50,297 ops/sec ±3.65% (73 runs sampled)
 
 Validation :: parse
 ✔ trcprnt
 ✔ TraceParent
 
 Benchmark :: parse
-  trcprnt                x 238,594 ops/sec ±0.98% (95 runs sampled)
-  TraceParent            x 116,793 ops/sec ±4.85% (75 runs sampled)
+  trcprnt                x 237,944 ops/sec ±0.56% (95 runs sampled)
+  TraceParent            x 116,229 ops/sec ±4.15% (78 runs sampled)
 
 Validation :: child
 ✔ trcprnt
 ✔ TraceParent
 
 Benchmark :: child
-  trcprnt                x 70,821 ops/sec ±2.21% (79 runs sampled)
-  TraceParent            x 37,526 ops/sec ±3.15% (78 runs sampled)
+  trcprnt                x 69,925 ops/sec ±2.35% (77 runs sampled)
+  TraceParent            x 36,920 ops/sec ±3.45% (77 runs sampled)
 ```
 
 ## License

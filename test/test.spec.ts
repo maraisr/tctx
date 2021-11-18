@@ -1,8 +1,3 @@
-import { webcrypto } from 'node:crypto';
-
-// @ts-ignore
-globalThis.crypto = webcrypto;
-
 import * as lib from '../src';
 
 import { test } from 'uvu';

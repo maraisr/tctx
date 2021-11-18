@@ -9,6 +9,6 @@
 		"removeComments": false,
 		"lib": ["DOM", "ESNext"]
 	},
-	"include": ["types.d.ts", "src/index.ts"],
+	"include": ["src/imports.d.ts", "src/index.ts"],
 	"exclude": ["node_modules"]
 }

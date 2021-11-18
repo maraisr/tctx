@@ -19,6 +19,10 @@
 	"sideEffects": false,
 	"type": "module",
 	"imports": {
+		"#crypto": {
+			"node": "./imports/crypto/node.js",
+			"default": "./imports/crypto/default.js"
+		},
 		"#hex": {
 			"node": "./imports/hex/node.js",
 			"default": "./imports/hex/default.js"
@@ -38,7 +42,7 @@
 	"scripts": {
 		"bench": "node -r tsm bench/index.ts",
 		"build": "rollup -c",
-		"format": "prettier  --write --list-different \"{*,src/**/*,test/*,bench/*,.github/**/*}.+(ts|json|yml|md)\"",
+		"format": "prettier  --write --list-different \"{*,src/**/*,imports/*/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
 		"test": "uvu test \".spec.ts$\" -r tsm",
 		"typecheck": "tsc --noEmit  --skipLibCheck"
 	},

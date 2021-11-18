@@ -1,4 +1,5 @@
 import { toHEX, asHEX } from '#hex';
+import { fill_random } from '#crypto';
 
 export interface Traceparent {
 	version: string;
@@ -31,13 +32,6 @@ const v_offset = 0,
 	f_offset = p_offset + p_size;
 
 /*#__INLINE__*/
-const set_random_values = /*#__PURE__*/ (
-	buf: Uint8Array,
-	offset: number,
-	end: number,
-) => crypto.getRandomValues(buf.subarray(offset, offset + end));
-
-/*#__INLINE__*/
 const slice = (buf: Uint8Array, offset: number, end?: number): string =>
 	toHEX(buf.slice(offset, end));
 
@@ -50,7 +44,7 @@ const traceparent = (buf: Uint8Array) => ({
 
 	child() {
 		const new_buf = new Uint8Array(buf);
-		set_random_values(new_buf, p_offset, p_size);
+		fill_random(new_buf, p_offset, p_size);
 		return traceparent(new_buf);
 	},
 
@@ -63,8 +57,8 @@ export const make = (): Traceparent => {
 	const buf = new Uint8Array(26);
 	buf[v_offset] = 0; // version
 	buf[f_offset] = 0; // flags
-	set_random_values(buf, t_offset, t_size); // trace-id
-	set_random_values(buf, p_offset, p_size); // parent-id
+	fill_random(buf, t_offset, t_size); // trace-id
+	fill_random(buf, p_offset, p_size); // parent-id
 
 	return traceparent(buf);
 };

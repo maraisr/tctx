@@ -10,7 +10,7 @@ import pkg from './package.json';
  */
 function output(isESM) {
 	return {
-		format: isESM ? 'esm': 'cjs',
+		format: isESM ? 'esm' : 'cjs',
 		file: pkg.exports['.'],
 		preferConst: true,
 		esModule: false,
@@ -24,13 +24,8 @@ function output(isESM) {
  */
 const source = {
 	input: 'src/index.ts',
-	output: [
-		output(true),
-	],
-	external: [
-		...Object.keys(pkg.peerDependencies),
-        '#hex'
-	],
+	output: [output(true)],
+	external: [...Object.keys(pkg.peerDependencies), '#hex', '#crypto'],
 	plugins: [
 		{
 			name: 'typescript',
@@ -38,16 +33,17 @@ const source = {
 				if (!/\.ts$/.test(file)) return code;
 				// @ts-ignore
 				let output = transpileModule(code, {
-					...tsconfig, fileName: file
+					...tsconfig,
+					fileName: file,
 				});
 				return {
 					code: output.outputText,
-					map: output.sourceMapText || null
+					map: output.sourceMapText || null,
 				};
-			}
-		}
-	]
-}
+			},
+		},
+	],
+};
 
 /**
  * @type {import('rollup').RollupOptions}
@@ -56,12 +52,10 @@ const types = {
 	input: 'src/index.ts',
 	output: {
 		file: pkg.types,
-		format: 'esm'
+		format: 'esm',
 	},
-	plugins: [
-		dts()
-	],
-}
+	plugins: [dts()],
+};
 
 // Multiple Rollup configs
 export default [types, source];
