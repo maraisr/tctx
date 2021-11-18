@@ -20,8 +20,7 @@
 
 ## ⚡ Features
 
-- **Lightweight** — _Browser_ runtime has a single dep, otherwise slim
-  [see](https://npm.anvaka.com/#/view/2d/trcprnt).
+- **Lightweight** — _Browser_ runtime has a single dep, otherwise slim [see](https://npm.anvaka.com/#/view/2d/trcprnt).
 
 - **Efficient** — Effective reuse of memory, and lazy.
 
@@ -39,7 +38,8 @@ npm add trcprnt
 
 ```ts
 // producer
-import { make, parse } from 'trcprnt';
+
+import { make } from 'trcprnt';
 
 fetch('/api', {
   headers: {
@@ -48,6 +48,8 @@ fetch('/api', {
 });
 
 // consumer
+
+import { parse } from 'trcprnt';
 
 const parent = parse(request.headers.traceparent);
 const id = parent.child();
@@ -69,16 +71,24 @@ Validation :: make
 ✔ TraceParent
 
 Benchmark :: make
-  trcprnt                x 94,483 ops/sec ±6.83% (81 runs sampled)
-  TraceParent            x 50,670 ops/sec ±5.58% (79 runs sampled)
+  trcprnt                x 85,168 ops/sec ±7.90% (81 runs sampled)
+  TraceParent            x 48,374 ops/sec ±4.58% (78 runs sampled)
 
 Validation :: parse
 ✔ trcprnt
 ✔ TraceParent
 
 Benchmark :: parse
-  trcprnt                x 172,333 ops/sec ±1.16% (93 runs sampled)
-  TraceParent            x 121,451 ops/sec ±4.17% (79 runs sampled)
+  trcprnt                x 160,489 ops/sec ±2.22% (88 runs sampled)
+  TraceParent            x 112,949 ops/sec ±4.17% (78 runs sampled)
+
+Validation :: child
+✔ trcprnt
+✔ TraceParent
+
+Benchmark :: child
+  trcprnt                x 55,909 ops/sec ±7.07% (80 runs sampled)
+  TraceParent            x 35,970 ops/sec ±3.12% (80 runs sampled)
 ```
 
 ## License

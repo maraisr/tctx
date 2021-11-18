@@ -36,6 +36,11 @@ function runner(
 	bench.run();
 }
 
+const valid_id = (o: string) =>
+	/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/.test(
+		o,
+	);
+
 runner(
 	'make',
 	{
@@ -51,10 +56,7 @@ runner(
 			);
 		},
 	},
-	(o: string) =>
-		/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/.test(
-			o,
-		),
+	valid_id,
 );
 
 runner(
@@ -76,4 +78,27 @@ runner(
 	},
 	(o: string) =>
 		'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
+);
+
+runner(
+	'child',
+	{
+		trcprnt: () => {
+			const parent = trcprnt.make();
+			return String(parent.child());
+		},
+		TraceParent: () => {
+			const version = Buffer.alloc(1).toString('hex');
+			const traceId = randomBytes(16).toString('hex');
+			const id = randomBytes(8).toString('hex');
+			const flags = '01';
+
+			const parent = TraceParent.fromString(
+				`${version}-${traceId}-${id}-${flags}`,
+			);
+
+			return String(parent.child());
+		},
+	},
+	valid_id,
 );
