@@ -13,13 +13,15 @@ export interface Traceparent {
 }
 
 /*
- 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
- ^  ^                                ^                ^ 
- |  |                                |                |
- |  |                                |                flags (2 hex)
- |  |                                parent-id (16 hex)
- |  trace-id (32 hex)
- version (2 hex)
+Anatomy of a Traceparent
+
+00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+^  ^                                ^                ^ 
+|  |                                |                |
+|  |                                |                flags (2 hex)
+|  |                                parent-id (16 hex)
+|  trace-id (32 hex)
+version (2 hex)
 */
 
 const trace_id_size = 16;
