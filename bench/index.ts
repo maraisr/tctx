@@ -1,7 +1,7 @@
 import { Suite } from 'benchmark';
 import * as assert from 'uvu/assert';
 
-import * as trcprnt from '../src';
+import * as tctx from '../src';
 import TraceParent from 'traceparent';
 
 import { randomBytes } from 'node:crypto';
@@ -41,7 +41,7 @@ const valid_id = (o: string) =>
 runner(
 	'make',
 	{
-		trcprnt: () => String(trcprnt.make()),
+		tctx: () => String(tctx.make()),
 		TraceParent: () => {
 			const version = Buffer.alloc(1).toString('hex');
 			const traceId = randomBytes(16).toString('hex');
@@ -59,9 +59,9 @@ runner(
 runner(
 	'parse',
 	{
-		trcprnt: () =>
+		tctx: () =>
 			String(
-				trcprnt.parse(
+				tctx.parse(
 					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
 				),
 			),
@@ -80,8 +80,8 @@ runner(
 runner(
 	'child',
 	{
-		trcprnt: () => {
-			const parent = trcprnt.make();
+		tctx: () => {
+			const parent = tctx.make();
 			return String(parent.child());
 		},
 		TraceParent: () => {

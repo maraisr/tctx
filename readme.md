@@ -1,26 +1,26 @@
 <div align="center">
-    <h1>trcprnt</h1>
-	<p><code>npm add trcprnt</code> makes <a href="https://www.w3.org/TR/trace-context/#traceparent-header">traceparent</a>'s simple</p>
+    <h1>tctx</h1>
+	<p><code>npm add tctx</code> makes <a href="https://www.w3.org/TR/trace-context/">Trace Contexts</a> simple</p>
 	<hr />
 	<div>
-		<a href="https://github.com/maraisr/trcprnt/actions/workflows/ci.yml">
-			<img src="https://github.com/maraisr/trcprnt/actions/workflows/ci.yml/badge.svg"/>
+		<a href="https://github.com/maraisr/tctx/actions/workflows/ci.yml">
+			<img src="https://github.com/maraisr/tctx/actions/workflows/ci.yml/badge.svg"/>
 		</a>
-		<a href="https://npm-stat.com/charts.html?package=trcprnt">
-			<img src="https://badgen.net/npm/dm/trcprnt?labelColor=black&color=black" alt="downloads"/>
+		<a href="https://npm-stat.com/charts.html?package=tctx">
+			<img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black" alt="downloads"/>
 		</a>
-		<a href="https://packagephobia.com/result?p=trcprnt">
-			<img src="https://badgen.net/packagephobia/install/trcprnt?labelColor=black&color=black" alt="size"/>
+		<a href="https://packagephobia.com/result?p=tctx">
+			<img src="https://badgen.net/packagephobia/install/tctx?labelColor=black&color=black" alt="size"/>
 		</a>
-		<a href="https://bundlephobia.com/result?p=trcprnt">
-			<img src="https://badgen.net/bundlephobia/minzip/trcprnt?labelColor=black&color=black" alt="size"/>
+		<a href="https://bundlephobia.com/result?p=tctx">
+			<img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
 		</a>
 	</div>
 </div>
 
 ## ⚡ Features
 
-- **Lightweight** — _Browser_ runtime has a single dep, otherwise slim [see](https://npm.anvaka.com/#/view/2d/trcprnt).
+- **Lightweight** — _Browser_ runtime has a single dep, otherwise slim [see](https://npm.anvaka.com/#/view/2d/tctx).
 
 - **Efficient** — Effective reuse of memory, and lazy.
 
@@ -31,7 +31,7 @@
 ## ⚙️ Install
 
 ```sh
-npm add trcprnt
+npm add tctx
 ```
 
 ## 🚀 Usage
@@ -39,7 +39,7 @@ npm add trcprnt
 ```ts
 // producer
 
-import { make } from 'trcprnt';
+import { make } from 'tctx';
 
 fetch('/api', {
   headers: {
@@ -49,7 +49,7 @@ fetch('/api', {
 
 // consumer
 
-import { parse } from 'trcprnt';
+import { parse } from 'tctx';
 
 const parent = parse(request.headers.traceparent);
 const id = parent.child();
@@ -67,27 +67,27 @@ fetch('/downstream', {
 
 ```
 Validation :: make
-✔ trcprnt
+✔ tctx
 ✔ TraceParent
 
 Benchmark :: make
-  trcprnt                x 184,080 ops/sec ±1.89% (84 runs sampled)
+  tctx                x 184,080 ops/sec ±1.89% (84 runs sampled)
   TraceParent            x 50,235 ops/sec ±4.09% (79 runs sampled)
 
 Validation :: parse
-✔ trcprnt
+✔ tctx
 ✔ TraceParent
 
 Benchmark :: parse
-  trcprnt                x 3,935,779 ops/sec ±0.50% (92 runs sampled)
+  tctx                x 3,935,779 ops/sec ±0.50% (92 runs sampled)
   TraceParent            x 117,942 ops/sec ±4.11% (78 runs sampled)
 
 Validation :: child
-✔ trcprnt
+✔ tctx
 ✔ TraceParent
 
 Benchmark :: child
-  trcprnt                x 101,445 ops/sec ±1.79% (68 runs sampled)
+  tctx                x 101,445 ops/sec ±1.79% (68 runs sampled)
   TraceParent            x 38,751 ops/sec ±2.62% (76 runs sampled)
 ```
 

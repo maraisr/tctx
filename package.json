@@ -1,7 +1,7 @@
 {
-	"name": "trcprnt",
+	"name": "tctx",
 	"version": "0.0.2",
-	"description": "Blazing fast w3c traceparent ids",
+	"description": "W3C Trace Contexts made simple",
 	"keywords": [
 		"tracecontext",
 		"traceparent",
@@ -9,7 +9,7 @@
 		"tracing",
 		"w3c"
 	],
-	"repository": "maraisr/trcprnt",
+	"repository": "maraisr/tctx",
 	"license": "MIT",
 	"author": {
 		"name": "Marais Rossouw",
