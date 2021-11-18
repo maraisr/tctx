@@ -1,6 +1,6 @@
 {
 	"name": "trcprnt",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Blazing fast w3c traceparent ids",
 	"keywords": [
 		"tracecontext",
