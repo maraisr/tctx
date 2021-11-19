@@ -1,6 +1,6 @@
 {
 	"name": "tctx",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "W3C Trace Contexts made simple",
 	"keywords": [
 		"tracecontext",
