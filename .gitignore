@@ -13,4 +13,5 @@ node_modules
 /.vscode
 
 /index.mjs
+/index.js
 /index.d.ts

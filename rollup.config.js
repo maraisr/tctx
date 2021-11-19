@@ -11,7 +11,7 @@ import pkg from './package.json';
 function output(isESM) {
 	return {
 		format: isESM ? 'esm' : 'cjs',
-		file: pkg.exports['.'],
+		file: pkg.exports['.'][isESM ? 'import' : 'require'],
 		preferConst: true,
 		esModule: false,
 		freeze: false,
@@ -24,7 +24,10 @@ function output(isESM) {
  */
 const source = {
 	input: 'src/index.ts',
-	output: [output(true)],
+	output: [
+		output(true),
+		output(false),
+	],
 	external: [...Object.keys(pkg.dependencies)],
 	plugins: [
 		{
