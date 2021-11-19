@@ -20,13 +20,11 @@
 
 ## ⚡ Features
 
-- **Lightweight** — _Browser_ runtime has a single dep, otherwise slim [see](https://npm.anvaka.com/#/view/2d/tctx).
+- **Lightweight** — [see](https://npm.anvaka.com/#/view/2d/tctx).
 
-- **Efficient** — Effective reuse of memory, and lazy.
+- **Efficient** — Effective reuse of memory between children see [benchmarks](#-benchmark).
 
 - **Producer Friendly** — Are you a browser? `make()` and go home.
-
-- **Quick** — Get an id super [performant](#-benchmark).
 
 ## ⚙️ Install
 
@@ -71,24 +69,24 @@ Validation :: make
 ✔ TraceParent
 
 Benchmark :: make
-  tctx                x 184,080 ops/sec ±1.89% (84 runs sampled)
-  TraceParent          x 50,235 ops/sec ±4.09% (79 runs sampled)
+  tctx                   x 226,914 ops/sec ±1.69% (82 runs sampled)
+  TraceParent            x 52,308 ops/sec ±3.87% (78 runs sampled)
 
 Validation :: parse
 ✔ tctx
 ✔ TraceParent
 
 Benchmark :: parse
-  tctx                x 3,935,779 ops/sec ±0.50% (92 runs sampled)
-  TraceParent           x 117,942 ops/sec ±4.11% (78 runs sampled)
+  tctx                   x 3,923,503 ops/sec ±0.44% (94 runs sampled)
+  TraceParent            x 120,083 ops/sec ±4.15% (76 runs sampled)
 
 Validation :: child
 ✔ tctx
 ✔ TraceParent
 
 Benchmark :: child
-  tctx                x 101,445 ops/sec ±1.79% (68 runs sampled)
-  TraceParent          x 38,751 ops/sec ±2.62% (76 runs sampled)
+  tctx                   x 123,069 ops/sec ±3.40% (69 runs sampled)
+  TraceParent            x 39,435 ops/sec ±2.84% (79 runs sampled)
 ```
 
 ## License

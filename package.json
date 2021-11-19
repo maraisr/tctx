@@ -18,16 +18,6 @@
 	},
 	"sideEffects": false,
 	"type": "module",
-	"imports": {
-		"#crypto": {
-			"node": "./imports/crypto/node.js",
-			"default": "./imports/crypto/default.js"
-		},
-		"#hex": {
-			"node": "./imports/hex/node.js",
-			"default": "./imports/hex/default.js"
-		}
-	},
 	"exports": {
 		".": "./index.mjs",
 		"./package.json": "./package.json"
@@ -54,21 +44,16 @@
 		"rollup-plugin-dts": "4.0.0",
 		"tsm": "2.1.4",
 		"typescript": "4.5.2",
-		"uvu": "0.5.2",
-		"worktop": "0.8.0-next.8"
-	},
-	"peerDependencies": {
-		"worktop": "0.8.0-next.8"
-	},
-	"peerDependenciesMeta": {
-		"worktop": {
-			"optional": true
-		}
+		"uvu": "0.5.2"
 	},
 	"engines": {
 		"node": ">=14"
 	},
 	"volta": {
 		"node": "16.12.0"
+	},
+	"dependencies": {
+		"@lukeed/csprng": "^1.0.0",
+		"uid": "^2.0.0"
 	}
 }

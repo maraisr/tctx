@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@lukeed/csprng': ^1.0.0
   '@marais/tsconfig': 0.0.1
   '@types/node': 16.11.7
   prettier: 2.4.1
@@ -8,8 +9,12 @@ specifiers:
   rollup-plugin-dts: 4.0.0
   tsm: 2.1.4
   typescript: 4.5.2
+  uid: ^2.0.0
   uvu: 0.5.2
-  worktop: 0.8.0-next.8
+
+dependencies:
+  '@lukeed/csprng': 1.0.0
+  uid: 2.0.0
 
 devDependencies:
   '@marais/tsconfig': 0.0.1
@@ -20,7 +25,6 @@ devDependencies:
   tsm: 2.1.4
   typescript: 4.5.2
   uvu: 0.5.2
-  worktop: 0.8.0-next.8
 
 packages:
 
@@ -48,6 +52,11 @@ packages:
       js-tokens: 4.0.0
     dev: true
     optional: true
+
+  /@lukeed/csprng/1.0.0:
+    resolution: {integrity: sha512-ruuGHsnabmObBdeMg3vKdGRmh06Oog3eFpf/Tk6X0kDSJDpJTDCj2dqdp1+0VjzIUgHlFF9GBm7uFqfYhhdX9g==}
+    engines: {node: '>=8'}
+    dev: false
 
   /@marais/tsconfig/0.0.1:
     resolution: {integrity: sha512-C/KwEPXqsDMrFT9BJ8xK9LR0O7uk1k9RzszqEgZIns7GwCaEt/m1oTbDvmRoQzRmtoqLpdQVUTPgIexUxJXhww==}
@@ -298,20 +307,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /mrmime/1.0.0:
-    resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}
-    engines: {node: '>=10'}
-    dev: true
-
   /prettier/2.4.1:
     resolution: {integrity: sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
-
-  /regexparam/2.0.0:
-    resolution: {integrity: sha512-gJKwd2MVPWHAIFLsaYDZfyKzHNS4o7E/v8YmNf44vmeV2e4YfVoDToTOKTvE7ab68cRJ++kLuEXJBaEeJVt5ow==}
-    engines: {node: '>=8'}
     dev: true
 
   /rollup-plugin-dts/4.0.0_rollup@2.58.0+typescript@4.5.2:
@@ -374,6 +373,13 @@ packages:
     hasBin: true
     dev: true
 
+  /uid/2.0.0:
+    resolution: {integrity: sha512-hFw+zKBA1szYdbZWj6FjTxZzJnKNf+wTDcsxlJaXS64MCy9LQEmJUVieGYHCKek/WRyFIcs0cEXtGIQmfvHe2A==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@lukeed/csprng': 1.0.0
+    dev: false
+
   /uvu/0.5.2:
     resolution: {integrity: sha512-m2hLe7I2eROhh+tm3WE5cTo/Cv3WQA7Oc9f7JB6uWv+/zVKvfAm53bMyOoGOSZeQ7Ov2Fu9pLhFr7p07bnT20w==}
     engines: {node: '>=8'}
@@ -384,12 +390,4 @@ packages:
       kleur: 4.1.4
       sade: 1.7.4
       totalist: 2.0.0
-    dev: true
-
-  /worktop/0.8.0-next.8:
-    resolution: {integrity: sha512-qy3nBmlS9a5GMxiBXgmtVACx62rpoHGjhnICd3103SyRu/xZp98+/D8BzB/n8H70STIv0jCUiEhyh66yKC1o1A==}
-    engines: {node: '>=12'}
-    dependencies:
-      mrmime: 1.0.0
-      regexparam: 2.0.0
     dev: true

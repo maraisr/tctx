@@ -25,7 +25,7 @@ function output(isESM) {
 const source = {
 	input: 'src/index.ts',
 	output: [output(true)],
-	external: [...Object.keys(pkg.peerDependencies), '#hex', '#crypto'],
+	external: [...Object.keys(pkg.dependencies)],
 	plugins: [
 		{
 			name: 'typescript',
