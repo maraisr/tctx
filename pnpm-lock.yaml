@@ -9,12 +9,10 @@ specifiers:
   rollup-plugin-dts: 4.0.0
   tsm: 2.1.4
   typescript: 4.5.2
-  uid: ^2.0.0
   uvu: 0.5.2
 
 dependencies:
   '@lukeed/csprng': 1.0.0
-  uid: 2.0.0
 
 devDependencies:
   '@marais/tsconfig': 0.0.1
@@ -372,13 +370,6 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
-
-  /uid/2.0.0:
-    resolution: {integrity: sha512-hFw+zKBA1szYdbZWj6FjTxZzJnKNf+wTDcsxlJaXS64MCy9LQEmJUVieGYHCKek/WRyFIcs0cEXtGIQmfvHe2A==}
-    engines: {node: '>=8'}
-    dependencies:
-      '@lukeed/csprng': 1.0.0
-    dev: false
 
   /uvu/0.5.2:
     resolution: {integrity: sha512-m2hLe7I2eROhh+tm3WE5cTo/Cv3WQA7Oc9f7JB6uWv+/zVKvfAm53bMyOoGOSZeQ7Ov2Fu9pLhFr7p07bnT20w==}

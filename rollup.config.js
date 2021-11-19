@@ -24,10 +24,7 @@ function output(isESM) {
  */
 const source = {
 	input: 'src/index.ts',
-	output: [
-		output(true),
-		output(false),
-	],
+	output: [output(true), output(false)],
 	external: [...Object.keys(pkg.dependencies)],
 	plugins: [
 		{

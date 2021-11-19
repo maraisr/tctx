@@ -2,11 +2,12 @@ import { random } from '@lukeed/csprng';
 
 let IDX = 256,
 	HEX: string[] = [];
-for (;IDX--;) HEX[IDX] = (IDX + 256).toString(16).substring(1);
+for (; IDX--; ) HEX[IDX] = (IDX + 256).toString(16).substring(1);
 
 /*#__INLINE__*/
 const to_hex = (arr: ArrayBuffer): string => {
-	let i = 0, output = '';
+	let i = 0,
+		output = '';
 	// @ts-ignore
 	for (; i < arr.length; i++) output += HEX[arr[i]];
 	return output;
