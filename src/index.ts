@@ -67,7 +67,19 @@ const traceparent = (
 	},
 });
 
-export const make = (): Traceparent => {
+/**
+ * Makes a new Traceparent which one can then `toString()` to get the value.
+ *
+ * @example
+ *
+ * ```js
+ * const id = make();
+ * String(id); // 00-aa3ee2e08eb134a292fb799969f2de62-62994ea4677bc463-00
+ * const child = id.child();
+ * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
+ * ```
+ */
+export const make = () => {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
 	return traceparent(
@@ -78,6 +90,17 @@ export const make = (): Traceparent => {
 	);
 };
 
+/**
+ * Allows you to parse an incoming value into the areas, easy for a server to continue the trace chain.
+ *
+ * @example
+ *
+ * ```js
+ * const parent = parse(req.headers.traceparent); // 00-aa3ee2e08eb134a292fb799969f2de62-62994ea4677bc463-00
+ * const child = parent.child();
+ * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
+ * ```
+ */
 export const parse = (value: string) => {
 	if (value.length > 55) return null;
 	const segs = value.split('-');
