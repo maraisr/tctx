@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@lukeed/csprng': ^1.0.0
+  '@lukeed/csprng': ^1.0.1
   '@marais/tsconfig': 0.0.1
   '@types/node': 16.11.9
   prettier: 2.4.1
@@ -12,7 +12,7 @@ specifiers:
   uvu: 0.5.2
 
 dependencies:
-  '@lukeed/csprng': 1.0.0
+  '@lukeed/csprng': 1.0.1
 
 devDependencies:
   '@marais/tsconfig': 0.0.1
@@ -51,8 +51,8 @@ packages:
     dev: true
     optional: true
 
-  /@lukeed/csprng/1.0.0:
-    resolution: {integrity: sha512-ruuGHsnabmObBdeMg3vKdGRmh06Oog3eFpf/Tk6X0kDSJDpJTDCj2dqdp1+0VjzIUgHlFF9GBm7uFqfYhhdX9g==}
+  /@lukeed/csprng/1.0.1:
+    resolution: {integrity: sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==}
     engines: {node: '>=8'}
     dev: false
 

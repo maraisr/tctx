@@ -1,6 +1,6 @@
 {
 	"name": "tctx",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "W3C Trace Contexts made simple",
 	"keywords": [
 		"tracecontext",
@@ -41,7 +41,7 @@
 		"typecheck": "tsc --noEmit  --skipLibCheck"
 	},
 	"dependencies": {
-		"@lukeed/csprng": "^1.0.0"
+		"@lukeed/csprng": "^1.0.1"
 	},
 	"devDependencies": {
 		"@marais/tsconfig": "0.0.1",
