@@ -45,7 +45,7 @@ test('parse string', () => {
 	assert.equal(t.flags, 0b00000001);
 });
 
-test('can create child', () => {
+test('child :: create', () => {
 	const parent = lib.make();
 	const child = parent.child();
 	is_valid_id(String(parent));
@@ -53,6 +53,16 @@ test('can create child', () => {
 
 	assert.not.equal(String(parent), String(child));
 });
+
+test('child :: sampled ripple into children', () => {
+	const parent = lib.make(true);
+	const child = parent.child();
+	is_valid_id(String(child));
+	is_valid_id(String(parent));
+
+	assert.is(lib.is_sampled(parent), true);
+	assert.is(lib.is_sampled(child), true);
+})
 
 test('util :: is_sampled', () => {
 	const id = lib.make();
