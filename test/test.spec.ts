@@ -14,7 +14,6 @@ test('exports', () => {
 	assert.type(lib.make, 'function');
 	assert.type(lib.parse, 'function');
 	assert.type(lib.is_sampled, 'function');
-	assert.type(lib.sample, 'function');
 });
 
 test('allows getters on parts', () => {
@@ -29,9 +28,10 @@ test('valid id', () => {
 	is_valid_id(String(lib.make()));
 });
 
-test('make id should create sampled', () => {
-	const t = lib.make();
-	assert.is(t.flags, 0b00000001);
+test('make id sampled tests', () => {
+	assert.is(lib.make().flags, 0b00000001);
+	assert.is(lib.make(true).flags, 0b00000001);
+	assert.is(lib.make(false).flags, 0b00000000);
 });
 
 test('parse string', () => {
@@ -60,16 +60,6 @@ test('util :: is_sampled', () => {
 
 	id.flags = 0b00000000;
 	assert.is(lib.is_sampled(id), false);
-});
-
-test('util :: sample', () => {
-	const id = lib.make();
-	id.flags = 0b00000000;
-	assert.is(lib.is_sampled(id), false, 'should not be sampled');
-	lib.sample(id, true);
-	assert.is(lib.is_sampled(id), true, 'should be sampled');
-	lib.sample(id, false);
-	assert.is(lib.is_sampled(id), false, 'should not be sampled');
 });
 
 test('use-case :: graph completes', () => {

@@ -81,14 +81,14 @@ const traceparent = (
  * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
  * ```
  */
-export const make = () => {
+export const make = (sampled: boolean = true) => {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
 	return traceparent(
 		W3C_TRACEPARENT_VERSION,
 		to_hex(id.slice(0, trace_id_size)),
 		to_hex(id.slice(trace_id_size, total_size)),
-		sampled_flag,
+		sampled ? sampled_flag : 0b00000000,
 	);
 };
 
@@ -110,7 +110,4 @@ export const parse = (value: string) => {
 };
 
 // ~> Utils
-export const is_sampled = (id: Traceparent) =>
-	!!(id.flags & sampled_flag);
-export const sample = (id: Traceparent, value: boolean): void =>
-	void (value ? id.flags |= sampled_flag : id.flags &= ~sampled_flag);
+export const is_sampled = (id: Traceparent) => !!(id.flags & sampled_flag);
