@@ -20,11 +20,16 @@ test('allows getters on parts', () => {
 	assert.type(t.version, 'string');
 	assert.type(t.trace_id, 'string');
 	assert.type(t.parent_id, 'string');
-	//assert.type(t.flags, 'number');
+	assert.type(t.flags, 'number');
 });
 
 test('valid id', () => {
 	is_valid_id(String(lib.make()));
+});
+
+test('make id should create sampled', () => {
+	const t = lib.make();
+	assert.is(t.flags, 0b00000001);
 });
 
 test('parse string', () => {
@@ -35,7 +40,7 @@ test('parse string', () => {
 	assert.equal(t.version, '00');
 	assert.equal(t.trace_id, '4bf92f3577b34da6a3ce929d0e0e4736');
 	assert.equal(t.parent_id, '00f067aa0ba902b7');
-	//assert.equal(t.flags, 0b00000000);
+	assert.equal(t.flags, 0b00000001);
 });
 
 test('can create child', () => {
@@ -47,9 +52,23 @@ test('can create child', () => {
 	assert.not.equal(String(parent), String(child));
 });
 
-test('use-case :: graph completes', () => {
-	let result = false;
+test('util :: is_sampled', () => {
+	const id = lib.make();
+	assert.is(lib.is_sampled(id), true);
 
+	id.flags = 0b00000000;
+	assert.is(lib.is_sampled(id), false);
+});
+
+test('util :: sample', () => {
+	const id = lib.make();
+	id.flags = 0b00000000;
+	assert.is(lib.is_sampled(id), false);
+	lib.sample(id);
+	assert.is(lib.is_sampled(id), true);
+});
+
+test('use-case :: graph completes', () => {
 	let graph = null;
 
 	const emit = (letter, parent, me) => {

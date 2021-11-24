@@ -17,7 +17,7 @@ export interface Traceparent {
 	version: string;
 	trace_id: string;
 	parent_id: string;
-	flags: string;
+	flags: number;
 
 	child(): Traceparent;
 
@@ -40,13 +40,13 @@ const trace_id_size = 16;
 const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
-const sampled_flag = '00';
+const sampled_flag = 0b00000001;
 
 const traceparent = (
 	version: string,
 	trace_id: string,
 	parent_id: string,
-	flags: string,
+	flags: number,
 ): Traceparent => ({
 	version,
 	trace_id,
@@ -63,7 +63,9 @@ const traceparent = (
 	},
 
 	toString() {
-		return `${this.version}-${this.trace_id}-${this.parent_id}-${this.flags}`;
+		return `${this.version}-${this.trace_id}-${this.parent_id}-${this.flags
+			.toString(16)
+			.padStart(2, '0')}`;
 	},
 });
 
@@ -104,5 +106,11 @@ export const make = () => {
 export const parse = (value: string) => {
 	if (value.length > 55) return null;
 	const segs = value.split('-');
-	return traceparent(segs[0], segs[1], segs[2], segs[3]);
+	return traceparent(segs[0], segs[1], segs[2], parseInt(segs[3], 16));
 };
+
+// ~> Utils
+export const is_sampled = (value: Traceparent) =>
+	!!(value.flags & sampled_flag);
+export const sample = (value: Traceparent): void =>
+	void (value.flags |= sampled_flag);
