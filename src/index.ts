@@ -110,7 +110,7 @@ export const parse = (value: string) => {
 };
 
 // ~> Utils
-export const is_sampled = (value: Traceparent) =>
-	!!(value.flags & sampled_flag);
-export const sample = (value: Traceparent): void =>
-	void (value.flags |= sampled_flag);
+export const is_sampled = (id: Traceparent) =>
+	!!(id.flags & sampled_flag);
+export const sample = (id: Traceparent, value: boolean): void =>
+	void (value ? id.flags |= sampled_flag : id.flags &= ~sampled_flag);

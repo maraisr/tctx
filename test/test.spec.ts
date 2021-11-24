@@ -13,6 +13,8 @@ const is_valid_id = (id: string) =>
 test('exports', () => {
 	assert.type(lib.make, 'function');
 	assert.type(lib.parse, 'function');
+	assert.type(lib.is_sampled, 'function');
+	assert.type(lib.sample, 'function');
 });
 
 test('allows getters on parts', () => {
@@ -63,9 +65,11 @@ test('util :: is_sampled', () => {
 test('util :: sample', () => {
 	const id = lib.make();
 	id.flags = 0b00000000;
-	assert.is(lib.is_sampled(id), false);
-	lib.sample(id);
-	assert.is(lib.is_sampled(id), true);
+	assert.is(lib.is_sampled(id), false, 'should not be sampled');
+	lib.sample(id, true);
+	assert.is(lib.is_sampled(id), true, 'should be sampled');
+	lib.sample(id, false);
+	assert.is(lib.is_sampled(id), false, 'should not be sampled');
 });
 
 test('use-case :: graph completes', () => {
