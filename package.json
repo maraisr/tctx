@@ -36,7 +36,7 @@
 	"scripts": {
 		"bench": "node -r tsm bench/index.ts",
 		"build": "rollup -c",
-		"format": "prettier  --write --list-different \"{*,src/**/*,imports/*/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
+		"format": "prettier  --write --list-different \"{*,src/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
 		"test": "uvu test \".spec.ts$\" -r tsm",
 		"typecheck": "tsc --noEmit  --skipLibCheck"
 	},
@@ -45,9 +45,9 @@
 	},
 	"devDependencies": {
 		"@marais/tsconfig": "0.0.1",
-		"@types/node": "16.11.9",
-		"prettier": "2.4.1",
-		"rollup": "2.60.0",
+		"@types/node": "16.11.10",
+		"prettier": "2.5.0",
+		"rollup": "2.60.1",
 		"rollup-plugin-dts": "4.0.1",
 		"tsm": "2.1.4",
 		"typescript": "4.5.2",
@@ -57,6 +57,6 @@
 		"node": ">=14"
 	},
 	"volta": {
-		"node": "16.12.0"
+		"node": "17.1.0"
 	}
 }

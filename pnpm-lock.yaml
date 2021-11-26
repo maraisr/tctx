@@ -3,9 +3,9 @@ lockfileVersion: 5.3
 specifiers:
   '@lukeed/csprng': ^1.0.1
   '@marais/tsconfig': 0.0.1
-  '@types/node': 16.11.9
-  prettier: 2.4.1
-  rollup: 2.60.0
+  '@types/node': 16.11.10
+  prettier: 2.5.0
+  rollup: 2.60.1
   rollup-plugin-dts: 4.0.1
   tsm: 2.1.4
   typescript: 4.5.2
@@ -16,10 +16,10 @@ dependencies:
 
 devDependencies:
   '@marais/tsconfig': 0.0.1
-  '@types/node': 16.11.9
-  prettier: 2.4.1
-  rollup: 2.60.0
-  rollup-plugin-dts: 4.0.1_rollup@2.60.0+typescript@4.5.2
+  '@types/node': 16.11.10
+  prettier: 2.5.0
+  rollup: 2.60.1
+  rollup-plugin-dts: 4.0.1_rollup@2.60.1+typescript@4.5.2
   tsm: 2.1.4
   typescript: 4.5.2
   uvu: 0.5.2
@@ -60,8 +60,8 @@ packages:
     resolution: {integrity: sha512-C/KwEPXqsDMrFT9BJ8xK9LR0O7uk1k9RzszqEgZIns7GwCaEt/m1oTbDvmRoQzRmtoqLpdQVUTPgIexUxJXhww==}
     dev: true
 
-  /@types/node/16.11.9:
-    resolution: {integrity: sha512-MKmdASMf3LtPzwLyRrFjtFFZ48cMf8jmX5VRYrDQiJa8Ybu5VAmkqBWqKU8fdCwD8ysw4mQ9nrEHvzg6gunR7A==}
+  /@types/node/16.11.10:
+    resolution: {integrity: sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA==}
     dev: true
 
   /ansi-styles/3.2.1:
@@ -305,13 +305,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier/2.4.1:
-    resolution: {integrity: sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==}
+  /prettier/2.5.0:
+    resolution: {integrity: sha512-FM/zAKgWTxj40rH03VxzIPdXmj39SwSjwG0heUcNFwI+EMZJnY93yAiKXM3dObIKAM5TA88werc8T/EwhB45eg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
 
-  /rollup-plugin-dts/4.0.1_rollup@2.60.0+typescript@4.5.2:
+  /rollup-plugin-dts/4.0.1_rollup@2.60.1+typescript@4.5.2:
     resolution: {integrity: sha512-DNv5F8pro/r0Hkx3JWKRtJZocDnqXfgypoajeiaNq134rYaFcEIl/oas5PogD1qexMadVijsHyVko1Chig0OOQ==}
     engines: {node: '>=v12.22.6'}
     peerDependencies:
@@ -319,14 +319,14 @@ packages:
       typescript: ^4.4.2
     dependencies:
       magic-string: 0.25.7
-      rollup: 2.60.0
+      rollup: 2.60.1
       typescript: 4.5.2
     optionalDependencies:
       '@babel/code-frame': 7.16.0
     dev: true
 
-  /rollup/2.60.0:
-    resolution: {integrity: sha512-cHdv9GWd58v58rdseC8e8XIaPUo8a9cgZpnCMMDGZFDZKEODOiPPEQFXLriWr/TjXzhPPmG5bkAztPsOARIcGQ==}
+  /rollup/2.60.1:
+    resolution: {integrity: sha512-akwfnpjY0rXEDSn1UTVfKXJhPsEBu+imi1gqBA1ZkHGydUnkV/fWCC90P7rDaLEW8KTwBcS1G3N4893Ndz+jwg==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
