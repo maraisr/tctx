@@ -19,7 +19,7 @@ export interface Traceparent {
 	parent_id: string;
 	flags: number;
 
-	child(): Traceparent;
+	child(sampled?: boolean): Traceparent;
 
 	toString(): string;
 }
@@ -40,7 +40,8 @@ const trace_id_size = 16;
 const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
-const sampled_flag = 0b00000001;
+
+export const SAMPLED_FLAG = 0b00000001;
 
 const traceparent = (
 	version: string,
@@ -53,12 +54,16 @@ const traceparent = (
 	parent_id,
 	flags,
 
-	child() {
+	child(sampled) {
 		return traceparent(
 			this.version,
 			this.trace_id,
 			to_hex(random(parent_id_size)),
-			this.flags,
+			sampled === undefined
+				? this.flags
+				: sampled
+				? this.flags | SAMPLED_FLAG
+				: this.flags & ~SAMPLED_FLAG,
 		);
 	},
 
@@ -84,11 +89,12 @@ const traceparent = (
 export const make = (sampled: boolean = true) => {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
+
 	return traceparent(
 		W3C_TRACEPARENT_VERSION,
 		to_hex(id.slice(0, trace_id_size)),
 		to_hex(id.slice(trace_id_size, total_size)),
-		sampled ? sampled_flag : 0b00000000,
+		sampled ? SAMPLED_FLAG : 0b00000000,
 	);
 };
 
@@ -110,4 +116,4 @@ export const parse = (value: string) => {
 };
 
 // ~> Utils
-export const is_sampled = (id: Traceparent) => !!(id.flags & sampled_flag);
+export const is_sampled = (id: Traceparent) => !!(id.flags & SAMPLED_FLAG);

@@ -62,7 +62,21 @@ test('child :: sampled ripple into children', () => {
 
 	assert.is(lib.is_sampled(parent), true);
 	assert.is(lib.is_sampled(child), true);
-})
+});
+
+test('child :: sampling doent affect parent', () => {
+	const parent = lib.make(true);
+	assert.is(lib.is_sampled(parent), true, 'parent should be sampled');
+	const child = parent.child();
+	assert.is(lib.is_sampled(child), true, 'child should inherit sampling');
+	const child2 = child.child(false);
+	assert.is(lib.is_sampled(child2), false, 'child2 shouldnt be sampled');
+	assert.is(lib.is_sampled(child), true, 'child should still be sampled');
+	assert.is(lib.is_sampled(parent), true, 'parent should still be sampled');
+	const child3 = child2.child(true);
+	assert.is(lib.is_sampled(child3), true, 'child3 should be sampled');
+	assert.is(lib.is_sampled(child2), false, 'child2 should still be sampled');
+});
 
 test('util :: is_sampled', () => {
 	const id = lib.make();
