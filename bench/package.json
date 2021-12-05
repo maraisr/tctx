@@ -3,6 +3,7 @@
 	"dependencies": {
 		"@types/benchmark": "2.1.1",
 		"benchmark": "2.1.4",
+		"trace-context": "^2.1.0",
 		"traceparent": "1.0.0"
 	}
 }

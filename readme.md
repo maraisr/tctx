@@ -50,7 +50,8 @@ fetch('/api', {
 import { parse } from 'tctx';
 
 const parent = parse(request.headers.traceparent);
-const id = parent.child();
+// Passing true will mark the traceparent as sampled — ends with 01.
+const id = parent.child(true);
 
 fetch('/downstream', {
   headers: {
@@ -66,27 +67,33 @@ fetch('/downstream', {
 ```
 Validation :: make
 ✔ tctx
-✔ TraceParent
+✔ traceparent
+✔ trace-context
 
 Benchmark :: make
-  tctx                   x 245,865 ops/sec ±0.95% (85 runs sampled)
-  TraceParent            x  57,354 ops/sec ±2.90% (79 runs sampled)
+  tctx                   x 237,520 ops/sec ±1.88% (81 runs sampled)
+  traceparent            x  58,993 ops/sec ±2.42% (84 runs sampled)
+  trace-context          x 102,664 ops/sec ±1.79% (78 runs sampled)
 
 Validation :: parse
 ✔ tctx
-✔ TraceParent
+✔ traceparent
+✔ trace-context
 
 Benchmark :: parse
-  tctx                   x 3,056,239 ops/sec ±0.67% (95 runs sampled)
-  TraceParent            x   138,542 ops/sec ±2.02% (85 runs sampled)
+  tctx                   x 3,017,798 ops/sec ±0.66% (93 runs sampled)
+  traceparent            x   139,283 ops/sec ±2.22% (87 runs sampled)
+  trace-context          x 1,762,715 ops/sec ±0.62% (95 runs sampled)
 
 Validation :: child
 ✔ tctx
-✔ TraceParent
+✔ traceparent
+✔ trace-context
 
 Benchmark :: child
-  tctx                   x 138,712 ops/sec ±2.50% (75 runs sampled)
-  TraceParent            x  43,052 ops/sec ±1.82% (84 runs sampled)
+  tctx                   x 134,337 ops/sec ±1.43% (90 runs sampled)
+  traceparent            x  42,678 ops/sec ±1.88% (83 runs sampled)
+  trace-context          x  69,281 ops/sec ±1.03% (78 runs sampled)
 ```
 
 ## License

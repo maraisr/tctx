@@ -3,6 +3,7 @@ import * as assert from 'uvu/assert';
 
 import * as tctx from '../src';
 import TraceParent from 'traceparent';
+import * as TraceContext from 'trace-context';
 
 import { randomBytes } from 'node:crypto';
 
@@ -42,7 +43,7 @@ runner(
 	'make',
 	{
 		tctx: () => String(tctx.make()),
-		TraceParent: () => {
+		traceparent: () => {
 			const version = Buffer.alloc(1).toString('hex');
 			const traceId = randomBytes(16).toString('hex');
 			const id = randomBytes(8).toString('hex');
@@ -50,6 +51,11 @@ runner(
 
 			return String(
 				TraceParent.fromString(`${version}-${traceId}-${id}-${flags}`),
+			);
+		},
+		['trace-context']: () => {
+			return TraceContext.http.serializeTraceParent(
+				TraceContext.TraceParent.random(),
 			);
 		},
 	},
@@ -65,9 +71,16 @@ runner(
 					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
 				),
 			),
-		TraceParent: () => {
+		traceparent: () => {
 			return String(
 				TraceParent.fromString(
+					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
+				),
+			);
+		},
+		['trace-context']: () => {
+			return TraceContext.http.serializeTraceParent(
+				TraceContext.http.parseTraceParent(
 					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
 				),
 			);
@@ -84,7 +97,7 @@ runner(
 			const parent = tctx.make();
 			return String(parent.child());
 		},
-		TraceParent: () => {
+		traceparent: () => {
 			const version = Buffer.alloc(1).toString('hex');
 			const traceId = randomBytes(16).toString('hex');
 			const id = randomBytes(8).toString('hex');
@@ -95,6 +108,12 @@ runner(
 			);
 
 			return String(parent.child());
+		},
+		['trace-context']: () => {
+			const parent = TraceContext.TraceParent.random();
+			const child = parent.clone();
+			child.spanId = TraceContext.randomSpanId();
+			return TraceContext.http.serializeTraceParent(parent);
 		},
 	},
 	valid_id,
