@@ -62,18 +62,19 @@ fetch('/downstream', {
 
 ## 💨 Benchmark
 
-> via the [`/bench`](/bench) directory with Node v16.12.0
+> via the [`/bench`](/bench) directory with Node v17.9.0
 
 ```
+
 Validation :: make
 ✔ tctx
 ✔ traceparent
 ✔ trace-context
 
 Benchmark :: make
-  tctx                   x 237,520 ops/sec ±1.88% (81 runs sampled)
-  traceparent            x  58,993 ops/sec ±2.42% (84 runs sampled)
-  trace-context          x 102,664 ops/sec ±1.79% (78 runs sampled)
+  tctx                   x 640,126 ops/sec ±0.21% (99 runs sampled)
+  traceparent            x 161,062 ops/sec ±0.55% (94 runs sampled)
+  trace-context          x 293,268 ops/sec ±0.35% (98 runs sampled)
 
 Validation :: parse
 ✔ tctx
@@ -81,9 +82,9 @@ Validation :: parse
 ✔ trace-context
 
 Benchmark :: parse
-  tctx                   x 3,017,798 ops/sec ±0.66% (93 runs sampled)
-  traceparent            x   139,283 ops/sec ±2.22% (87 runs sampled)
-  trace-context          x 1,762,715 ops/sec ±0.62% (95 runs sampled)
+  tctx                   x 5,561,913 ops/sec ±0.14% (100 runs sampled)
+  traceparent            x   303,543 ops/sec ±0.42% (91 runs sampled)
+  trace-context          x 3,169,835 ops/sec ±0.05% (99 runs sampled)
 
 Validation :: child
 ✔ tctx
@@ -91,9 +92,10 @@ Validation :: child
 ✔ trace-context
 
 Benchmark :: child
-  tctx                   x 134,337 ops/sec ±1.43% (90 runs sampled)
-  traceparent            x  42,678 ops/sec ±1.88% (83 runs sampled)
-  trace-context          x  69,281 ops/sec ±1.03% (78 runs sampled)
+  tctx                   x 346,827 ops/sec ±0.40% (97 runs sampled)
+  traceparent            x 109,942 ops/sec ±0.61% (93 runs sampled)
+  trace-context          x 195,381 ops/sec ±0.35% (93 runs sampled)
+
 ```
 
 ## License
