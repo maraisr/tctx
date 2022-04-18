@@ -21,10 +21,10 @@ export interface Traceparent {
  * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
  * ```
  *
- * @param sampled sets the sampling of the traceparent (eg the last -00, or -01)
+ * @param [sampled=true] sets the sampling of the traceparent (eg the last -00, or -01)
  *                 typically used when the creator doesnt emit to the collector.
  */
-export function make(sampled: boolean = true): Traceparent;
+export function make(sampled?: boolean): Traceparent;
 
 /**
  * Allows you to parse an incoming value into the areas, easy for a server to continue the trace chain.
