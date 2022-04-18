@@ -1,4 +1,5 @@
 import { random } from '@lukeed/csprng';
+import type { Traceparent } from 'tctx';
 
 let IDX = 256,
 	HEX: string[] = [];
@@ -12,17 +13,6 @@ const to_hex = (arr: ArrayBuffer): string => {
 	for (; i < arr.length; i++) output += HEX[arr[i]];
 	return output;
 };
-
-export interface Traceparent {
-	version: string;
-	trace_id: string;
-	parent_id: string;
-	flags: number;
-
-	child(sampled?: boolean): Traceparent;
-
-	toString(): string;
-}
 
 /*
 Anatomy of a Traceparent
@@ -41,7 +31,7 @@ const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
 
-export const SAMPLED_FLAG = 0b00000001;
+const SAMPLED_FLAG = 0b00000001;
 
 const traceparent = (
 	version: string,
@@ -68,25 +58,12 @@ const traceparent = (
 	},
 
 	toString() {
-		return `${this.version}-${this.trace_id}-${this.parent_id}-${this.flags
-			.toString(16)
-			.padStart(2, '0')}`;
+		const flags = this.flags.toString(16).padStart(2, '0');
+		return `${this.version}-${this.trace_id}-${this.parent_id}-${flags}`;
 	},
 });
 
-/**
- * Makes a new Traceparent which one can then `toString()` to get the value.
- *
- * @example
- *
- * ```js
- * const id = make();
- * String(id); // 00-aa3ee2e08eb134a292fb799969f2de62-62994ea4677bc463-00
- * const child = id.child();
- * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
- * ```
- */
-export const make = (sampled: boolean = true) => {
+export function make(sampled: boolean = true) {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
 
@@ -96,24 +73,16 @@ export const make = (sampled: boolean = true) => {
 		to_hex(id.slice(trace_id_size, total_size)),
 		sampled ? SAMPLED_FLAG : 0b00000000,
 	);
-};
+}
 
-/**
- * Allows you to parse an incoming value into the areas, easy for a server to continue the trace chain.
- *
- * @example
- *
- * ```js
- * const parent = parse(req.headers.traceparent); // 00-aa3ee2e08eb134a292fb799969f2de62-62994ea4677bc463-00
- * const child = parent.child();
- * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
- * ```
- */
-export const parse = (value: string) => {
+export function parse(value: string) {
 	if (value.length > 55) return null;
 	const segs = value.split('-');
 	return traceparent(segs[0], segs[1], segs[2], parseInt(segs[3], 16));
-};
+}
 
 // ~> Utils
-export const is_sampled = (id: Traceparent) => !!(id.flags & SAMPLED_FLAG);
+
+export function is_sampled(id: Traceparent) {
+	return !!(id.flags & SAMPLED_FLAG);
+}
