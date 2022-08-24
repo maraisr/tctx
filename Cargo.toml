@@ -1,0 +1,16 @@
+[package]
+name = "traceparent"
+description = "w3c traceparents made simple"
+version = "0.0.1"
+license = "MIT"
+authors = ["Marais Rossouw <me@marais.dev>"]
+repository = "https://github.com/maraisr/tctx"
+homepage = "https://github.com/maraisr/tctx"
+documentation = "https://docs.rs/traceparent"
+keywords = ["tracecontext","traceparent", "distributed", "tracing", "w3c"]
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0"
+fastrand = "1.8"
+

@@ -15,3 +15,7 @@ node_modules
 /index.mjs
 /index.js
 /index.d.ts
+
+# Rust
+!/Cargo.lock
+/target
