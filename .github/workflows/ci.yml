@@ -6,7 +6,7 @@ on:
   pull_request: {}
 
 jobs:
-  test:
+  test_js:
     name: Node.js v${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
@@ -18,7 +18,7 @@ jobs:
       - name: (env) setup pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.32.8
+          version: 7.14.2
 
       - name: (env) setup node v${{ matrix.node }}
         uses: actions/setup-node@main
@@ -38,3 +38,44 @@ jobs:
 
       - name: Check Types
         run: pnpm typecheck
+
+  test_rs:
+    name: Rust ${{ matrix.rustv }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rustv: [nightly, stable]
+    steps:
+      - uses: actions/checkout@main
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rustv }}
+
+      - name: Set up cargo cache
+        uses: actions/cache@v3
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Lint
+        run: cargo fmt --all -- --check
+
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
