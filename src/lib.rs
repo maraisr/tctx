@@ -16,7 +16,7 @@ use anyhow::bail;
 static W3C_TRACEPARENT_VERSION: u8 = 0;
 static BIT_FLAG_SAMPLED: u8 = 1 << 0;
 
-#[derive(Eq, PartialEq)]
+#[derive(Eq, PartialEq, Debug)]
 pub struct Traceparent {
     version: u8,
     trace_id: u128, // 16 bytes
@@ -25,6 +25,22 @@ pub struct Traceparent {
 }
 
 impl Traceparent {
+    pub fn version(&self) -> u8 {
+        self.version
+    }
+
+    pub fn trace_id(&self) -> u128 {
+        self.trace_id
+    }
+
+    pub fn parent_id(&self) -> u64 {
+        self.parent_id
+    }
+
+    pub fn flags(&self) -> u8 {
+        self.flags
+    }
+
     pub fn child(&self, sampled: bool) -> Traceparent {
         Traceparent {
             version: self.version,
@@ -76,7 +92,7 @@ pub fn make(sampled: bool) -> Traceparent {
     }
 }
 
-pub fn parse(value: &'static str) -> anyhow::Result<Traceparent> {
+pub fn parse(value: &str) -> anyhow::Result<Traceparent> {
     if value.len() != 55 {
         bail!("traceparent is not of length 55")
     }
