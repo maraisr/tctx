@@ -1,36 +1,42 @@
-<div align="center">
-    <h1>tctx</h1>
-	<p><code>npm add tctx</code> makes <a href="https://www.w3.org/TR/trace-context/">Trace Contexts</a> simple</p>
-	<hr />
-	<div>
-		<a href="https://github.com/maraisr/tctx/actions/workflows/ci.yml">
-			<img src="https://github.com/maraisr/tctx/actions/workflows/ci.yml/badge.svg"/>
-		</a>
-		<a href="https://npm-stat.com/charts.html?package=tctx">
-			<img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black" alt="downloads"/>
-		</a>
-		<a href="https://packagephobia.com/result?p=tctx">
-			<img src="https://badgen.net/packagephobia/install/tctx?labelColor=black&color=black" alt="size"/>
-		</a>
-		<a href="https://bundlephobia.com/result?p=tctx">
-			<img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
-		</a>
-	</div>
+<div align="left">
+
+<samp>
+
+# traceparent
+
+</samp>
+
+**W3C Traceparents in Rust and JavaScript**
+
+<a href="https://npm-stat.com/charts.html?package=tctx">
+  <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
+</a>
+<a href="https://bundlephobia.com/result?p=tctx">
+  <img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
+</a>
+
+<a href="https://crates.io/crates/traceparent">
+  <img src="https://badgen.net/crates/d/traceparent?labelColor=black&color=black&label=crate downloads" alt="rust downloads"/>
+</a>
+
+<br /><br />
+
+<sup>
+
+This is free to use software, but if you do like it, consisder supporting me ❤️
+
+[![sponsor me](https://badgen.net/badge/icon/sponsor?icon=github&label&color=gray)](https://github.com/sponsors/maraisr)
+[![buy me a coffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label&color=gray)](https://www.buymeacoffee.com/marais)
+
+</sup>
+
 </div>
-
-## ⚡ Features
-
-- **Lightweight** — [see](https://npm.anvaka.com/#/view/2d/tctx).
-
-- **Efficient** — Effective reuse of memory between children see [benchmarks](#-benchmark).
-
-- **Producer Friendly** — Are you a browser? `make()` and go home.
 
 ## ⚙️ Install
 
-```sh
-npm add tctx
-```
+👉 `npm add tctx`
+
+👉 `cargo add traceparent`
 
 ## 🚀 Usage
 
