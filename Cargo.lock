@@ -34,7 +34,7 @@ dependencies = [
 
 [[package]]
 name = "traceparent"
-version = "0.0.1"
+version = "0.0.3"
 dependencies = [
  "anyhow",
  "fastrand",

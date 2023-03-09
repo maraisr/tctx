@@ -11,11 +11,7 @@
 	],
 	"repository": "maraisr/tctx",
 	"license": "MIT",
-	"author": {
-		"name": "Marais Rossouw",
-		"email": "me@marais.dev",
-		"url": "https://marais.io"
-	},
+	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
@@ -36,20 +32,22 @@
 	"scripts": {
 		"bench": "node -r tsm bench/index.ts",
 		"build": "bundt --minify",
-		"format": "prettier  --write --list-different \"{*,src/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
+		"format": "prettier --write --list-different \"{*,src/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
 		"test": "uvu test \".spec.ts$\" -r tsm",
-		"typecheck": "tsc --noEmit  --skipLibCheck"
+		"typecheck": "tsc --noEmit --skipLibCheck"
 	},
+	"prettier": "@marais/prettier",
 	"dependencies": {
 		"@lukeed/csprng": "^1.0.1"
 	},
 	"devDependencies": {
-		"@marais/tsconfig": "0.0.1",
-		"@types/node": "16.11.11",
+		"@marais/prettier": "0.0.1",
+		"@marais/tsconfig": "0.0.3",
+		"@types/node": "18.14.6",
 		"bundt": "2.0.0-next.2",
-		"prettier": "2.5.1",
-		"tsm": "2.2.1",
-		"typescript": "4.5.2",
+		"prettier": "2.8.4",
+		"tsm": "2.3.0",
+		"typescript": "4.9.5",
 		"uvu": "0.5.2"
 	},
 	"engines": {
