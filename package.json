@@ -1,6 +1,6 @@
 {
 	"name": "tctx",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"description": "W3C Trace Contexts made simple",
 	"keywords": [
 		"tracecontext",
@@ -13,7 +13,6 @@
 	"license": "MIT",
 	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
 	"sideEffects": false,
-	"type": "module",
 	"exports": {
 		".": {
 			"import": "./index.mjs",
