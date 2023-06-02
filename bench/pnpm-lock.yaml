@@ -1,76 +1,105 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  '@marais/bench':
-    specifier: 0.0.8
-    version: 0.0.8
-  tctx:
-    specifier: file:../
-    version: file:..
-  trace-context:
-    specifier: ^2.1.0
-    version: 2.1.0
-  traceparent:
-    specifier: 1.0.0
-    version: 1.0.0
+    '@marais/bench':
+        specifier: 0.0.8
+        version: 0.0.8
+    tctx:
+        specifier: file:../
+        version: file:..
+    trace-context:
+        specifier: ^2.1.0
+        version: 2.1.0
+    traceparent:
+        specifier: 1.0.0
+        version: 1.0.0
 
 packages:
+    /@lukeed/csprng@1.1.0:
+        resolution:
+            {
+                integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==,
+            }
+        engines: { node: '>=8' }
+        dev: false
 
-  /@lukeed/csprng@1.1.0:
-    resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
-    engines: {node: '>=8'}
-    dev: false
+    /@marais/bench@0.0.8:
+        resolution:
+            {
+                integrity: sha512-DZ3TqK1eUN77E2nV2Aj2aady61rveJGqGAPNQglzoJL001HJq9elFLRS6pw25e6geIEmRld9cJ5F/EHFUYa+DQ==,
+            }
+        dependencies:
+            '@thi.ng/bench': 3.2.11
+        dev: false
 
-  /@marais/bench@0.0.8:
-    resolution: {integrity: sha512-DZ3TqK1eUN77E2nV2Aj2aady61rveJGqGAPNQglzoJL001HJq9elFLRS6pw25e6geIEmRld9cJ5F/EHFUYa+DQ==}
-    dependencies:
-      '@thi.ng/bench': 3.2.11
-    dev: false
+    /@thi.ng/api@8.8.1:
+        resolution:
+            {
+                integrity: sha512-ugTtl3dvOuRsLAF9hZcd/ULBXDG0cAacEQ26jRY00JEEwdy24WR1DOO4iL2mHei0vm2HyvfJ8IlJoRR7mSSqUA==,
+            }
+        engines: { node: '>=12.7' }
+        dev: false
 
-  /@thi.ng/api@8.8.1:
-    resolution: {integrity: sha512-ugTtl3dvOuRsLAF9hZcd/ULBXDG0cAacEQ26jRY00JEEwdy24WR1DOO4iL2mHei0vm2HyvfJ8IlJoRR7mSSqUA==}
-    engines: {node: '>=12.7'}
-    dev: false
+    /@thi.ng/bench@3.2.11:
+        resolution:
+            {
+                integrity: sha512-1SSCfwbIXJ9KUIjAaLZEmKSC5OCQf5hDpmzLXlhDFr1SlOaBYXgtu+k8GrSRqmu2kezTV0u23nfW7LSJ5YX2ZA==,
+            }
+        engines: { node: '>=12.7' }
+        dependencies:
+            '@thi.ng/api': 8.8.1
+        dev: false
 
-  /@thi.ng/bench@3.2.11:
-    resolution: {integrity: sha512-1SSCfwbIXJ9KUIjAaLZEmKSC5OCQf5hDpmzLXlhDFr1SlOaBYXgtu+k8GrSRqmu2kezTV0u23nfW7LSJ5YX2ZA==}
-    engines: {node: '>=12.7'}
-    dependencies:
-      '@thi.ng/api': 8.8.1
-    dev: false
+    /@types/uuid@3.4.10:
+        resolution:
+            {
+                integrity: sha512-BgeaZuElf7DEYZhWYDTc/XcLZXdVgFkVSTa13BqKvbnmUrxr3TJFKofUxCtDO9UQOdhnV+HPOESdHiHKZOJV1A==,
+            }
+        dev: false
 
-  /@types/uuid@3.4.10:
-    resolution: {integrity: sha512-BgeaZuElf7DEYZhWYDTc/XcLZXdVgFkVSTa13BqKvbnmUrxr3TJFKofUxCtDO9UQOdhnV+HPOESdHiHKZOJV1A==}
-    dev: false
+    /random-poly-fill@1.0.1:
+        resolution:
+            {
+                integrity: sha512-bMOL0hLfrNs52+EHtIPIXxn2PxYwXb0qjnKruTjXiM/sKfYqj506aB2plFwWW1HN+ri724bAVVGparh4AtlJKw==,
+            }
+        dev: false
 
-  /random-poly-fill@1.0.1:
-    resolution: {integrity: sha512-bMOL0hLfrNs52+EHtIPIXxn2PxYwXb0qjnKruTjXiM/sKfYqj506aB2plFwWW1HN+ri724bAVVGparh4AtlJKw==}
-    dev: false
+    /trace-context@2.1.0:
+        resolution:
+            {
+                integrity: sha512-0mZ0C4Espu57vvokEZqY6sfa5HBqxD2aOWEmG2B7rBfwM797hPN2Va51nUBPdMwNwncOSZSJZPtNnDqlh9RzzA==,
+            }
+        dependencies:
+            '@types/uuid': 3.4.10
+            uuid: 3.4.0
+        dev: false
 
-  /trace-context@2.1.0:
-    resolution: {integrity: sha512-0mZ0C4Espu57vvokEZqY6sfa5HBqxD2aOWEmG2B7rBfwM797hPN2Va51nUBPdMwNwncOSZSJZPtNnDqlh9RzzA==}
-    dependencies:
-      '@types/uuid': 3.4.10
-      uuid: 3.4.0
-    dev: false
+    /traceparent@1.0.0:
+        resolution:
+            {
+                integrity: sha512-b/hAbgx57pANQ6cg2eBguY3oxD6FGVLI1CC2qoi01RmHR7AYpQHPXTig9FkzbWohEsVuHENZHP09aXuw3/LM+w==,
+            }
+        dependencies:
+            random-poly-fill: 1.0.1
+        dev: false
 
-  /traceparent@1.0.0:
-    resolution: {integrity: sha512-b/hAbgx57pANQ6cg2eBguY3oxD6FGVLI1CC2qoi01RmHR7AYpQHPXTig9FkzbWohEsVuHENZHP09aXuw3/LM+w==}
-    dependencies:
-      random-poly-fill: 1.0.1
-    dev: false
+    /uuid@3.4.0:
+        resolution:
+            {
+                integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==,
+            }
+        deprecated:
+            Please upgrade  to version 7 or higher.  Older versions may use Math.random() in
+            certain circumstances, which is known to be problematic.  See
+            https://v8.dev/blog/math-random for details.
+        hasBin: true
+        dev: false
 
-  /uuid@3.4.0:
-    resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
-    hasBin: true
-    dev: false
-
-  file:..:
-    resolution: {directory: .., type: directory}
-    name: tctx
-    version: 0.0.11
-    engines: {node: '>=14'}
-    dependencies:
-      '@lukeed/csprng': 1.1.0
-    dev: false
+    file:..:
+        resolution: { directory: .., type: directory }
+        name: tctx
+        version: 0.0.11
+        engines: { node: '>=14' }
+        dependencies:
+            '@lukeed/csprng': 1.1.0
+        dev: false

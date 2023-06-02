@@ -21,14 +21,10 @@ suite(
 			const id = randomBytes(8).toString('hex');
 			const flags = '01';
 
-			return String(
-				TraceParent.fromString(`${version}-${traceId}-${id}-${flags}`),
-			);
+			return String(TraceParent.fromString(`${version}-${traceId}-${id}-${flags}`));
 		},
 		['trace-context']: () => () => {
-			return TraceContext.http.serializeTraceParent(
-				TraceContext.TraceParent.random(),
-			);
+			return TraceContext.http.serializeTraceParent(TraceContext.TraceParent.random());
 		},
 	},
 	(run) => {
@@ -52,8 +48,7 @@ suite<string>(
 		run(
 			'parse',
 			() => '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-			(o: string) =>
-				'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
+			(o: string) => '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
 		);
 	},
 );
@@ -73,9 +68,7 @@ suite(
 			const id = randomBytes(8).toString('hex');
 			const flags = '01';
 
-			const parent = TraceParent.fromString(
-				`${version}-${traceId}-${id}-${flags}`,
-			);
+			const parent = TraceParent.fromString(`${version}-${traceId}-${id}-${flags}`);
 
 			return () => {
 				return String(parent.child());
