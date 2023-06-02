@@ -1,49 +1,21 @@
-import { Suite } from 'benchmark';
+import { suite } from '@marais/bench';
 import * as assert from 'uvu/assert';
 
-import * as tctx from '../src';
+import * as tctx from 'tctx';
 import TraceParent from 'traceparent';
 import * as TraceContext from 'trace-context';
 
 import { randomBytes } from 'node:crypto';
-
-function runner(
-	name: string,
-	candidates: Record<string, Function>,
-	valid: (s: string) => boolean,
-) {
-	console.log('\nValidation :: %s', name);
-	Object.keys(candidates).forEach((name) => {
-		const result = candidates[name]();
-		try {
-			assert.ok(valid(result), `${result} is not ok`);
-			console.log(`✔`, name);
-		} catch (err) {
-			console.log('✘', name, `(FAILED @ "${err.message}")`);
-		}
-	});
-
-	console.log('\nBenchmark :: %s', name);
-	const bench = new Suite().on('cycle', (e) => console.log('  ' + e.target));
-	Object.keys(candidates).forEach((name) => {
-		bench.add(name + ' '.repeat(22 - name.length), () =>
-			candidates[name](),
-		);
-	});
-
-	bench.run();
-}
 
 const valid_id = (o: string) =>
 	/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/.test(
 		o,
 	);
 
-runner(
-	'make',
+suite(
 	{
-		tctx: () => String(tctx.make()),
-		traceparent: () => {
+		tctx: () => () => String(tctx.make()),
+		traceparent: () => () => {
 			const version = Buffer.alloc(1).toString('hex');
 			const traceId = randomBytes(16).toString('hex');
 			const id = randomBytes(8).toString('hex');
@@ -53,49 +25,47 @@ runner(
 				TraceParent.fromString(`${version}-${traceId}-${id}-${flags}`),
 			);
 		},
-		['trace-context']: () => {
+		['trace-context']: () => () => {
 			return TraceContext.http.serializeTraceParent(
 				TraceContext.TraceParent.random(),
 			);
 		},
 	},
-	valid_id,
+	(run) => {
+		run('make', undefined, valid_id);
+	},
 );
 
-runner(
-	'parse',
+suite<string>(
 	{
-		tctx: () =>
-			String(
-				tctx.parse(
-					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-				),
-			),
-		traceparent: () => {
-			return String(
-				TraceParent.fromString(
-					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-				),
-			);
+		tctx: () => (input) => String(tctx.parse(input)),
+		traceparent: () => (input) => {
+			return String(TraceParent.fromString(input));
 		},
-		['trace-context']: () => {
+		['trace-context']: () => (input) => {
 			return TraceContext.http.serializeTraceParent(
-				TraceContext.http.parseTraceParent(
-					'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-				),
+				TraceContext.http.parseTraceParent(input),
 			);
 		},
 	},
-	(o: string) =>
-		'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
+	(run) => {
+		run(
+			'parse',
+			() => '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
+			(o: string) =>
+				'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
+		);
+	},
 );
 
-runner(
-	'child',
+suite(
 	{
 		tctx: () => {
 			const parent = tctx.make();
-			return String(parent.child());
+
+			return () => {
+				return String(parent.child());
+			};
 		},
 		traceparent: () => {
 			const version = Buffer.alloc(1).toString('hex');
@@ -107,14 +77,21 @@ runner(
 				`${version}-${traceId}-${id}-${flags}`,
 			);
 
-			return String(parent.child());
+			return () => {
+				return String(parent.child());
+			};
 		},
 		['trace-context']: () => {
 			const parent = TraceContext.TraceParent.random();
-			const child = parent.clone();
-			child.spanId = TraceContext.randomSpanId();
-			return TraceContext.http.serializeTraceParent(parent);
+
+			return () => {
+				const child = parent.clone();
+				child.spanId = TraceContext.randomSpanId();
+				return TraceContext.http.serializeTraceParent(parent);
+			};
 		},
 	},
-	valid_id,
+	(run) => {
+		run('child', undefined, valid_id);
+	},
 );

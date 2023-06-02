@@ -1,9 +1,9 @@
 {
-	"private": true,
+	"type": "module",
 	"dependencies": {
-		"@types/benchmark": "2.1.2",
-		"benchmark": "2.1.4",
+		"@marais/bench": "0.0.8",
 		"trace-context": "^2.1.0",
-		"traceparent": "1.0.0"
+		"traceparent": "1.0.0",
+		"tctx": "file:../"
 	}
 }

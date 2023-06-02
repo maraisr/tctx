@@ -71,37 +71,20 @@ fetch('/downstream', {
 > via the [`/bench`](/bench) directory with Node v17.9.0
 
 ```
+#  make
+✔  tctx          ~ 765,942 ops/sec ± 0.05%
+✔  traceparent   ~ 172,675 ops/sec ± 0.11%
+✔  trace-context ~ 317,746 ops/sec ± 0.10%
 
-Validation :: make
-✔ tctx
-✔ traceparent
-✔ trace-context
+#  parse
+✔  tctx          ~ 6,475,924 ops/sec ± 0.06%
+✔  traceparent   ~   340,637 ops/sec ± 0.15%
+✔  trace-context ~ 3,567,563 ops/sec ± 0.10%
 
-Benchmark :: make
-  tctx                   x 640,126 ops/sec ±0.21% (99 runs sampled)
-  traceparent            x 161,062 ops/sec ±0.55% (94 runs sampled)
-  trace-context          x 293,268 ops/sec ±0.35% (98 runs sampled)
-
-Validation :: parse
-✔ tctx
-✔ traceparent
-✔ trace-context
-
-Benchmark :: parse
-  tctx                   x 5,561,913 ops/sec ±0.14% (100 runs sampled)
-  traceparent            x   303,543 ops/sec ±0.42% (91 runs sampled)
-  trace-context          x 3,169,835 ops/sec ±0.05% (99 runs sampled)
-
-Validation :: child
-✔ tctx
-✔ traceparent
-✔ trace-context
-
-Benchmark :: child
-  tctx                   x 346,827 ops/sec ±0.40% (97 runs sampled)
-  traceparent            x 109,942 ops/sec ±0.61% (93 runs sampled)
-  trace-context          x 195,381 ops/sec ±0.35% (93 runs sampled)
-
+#  child
+✔  tctx          ~ 895,947 ops/sec ± 0.06%
+✔  traceparent   ~ 273,277 ops/sec ± 0.14%
+✔  trace-context ~ 621,727 ops/sec ± 0.13%
 ```
 
 ## License
