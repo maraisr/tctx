@@ -1,4 +1,4 @@
-import * as lib from '../src';
+import * as lib from '.';
 
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
@@ -38,7 +38,7 @@ test('parse string', () => {
 	const id = '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01';
 	is_valid_id(id);
 
-	const t = lib.parse(id);
+	const t = lib.parse(id)!;
 	assert.equal(t.version, '00');
 	assert.equal(t.trace_id, '4bf92f3577b34da6a3ce929d0e0e4736');
 	assert.equal(t.parent_id, '00f067aa0ba902b7');
@@ -87,9 +87,9 @@ test('util :: is_sampled', () => {
 });
 
 test('use-case :: graph completes', () => {
-	let graph = null;
+	let graph: any = null;
 
-	const emit = (letter, parent, me) => {
+	const emit = (letter: string, parent: string, me: string) => {
 		if (graph === null) graph = { root: parent };
 		graph[letter] = { parent, me };
 	};
@@ -108,7 +108,6 @@ test('use-case :: graph completes', () => {
 	for (const letter of Object.keys(graph)) {
 		if (letter === 'root') continue;
 		const parent = graph[letter].parent;
-		const me = graph[letter].me;
 
 		switch (letter) {
 			case 'a':
