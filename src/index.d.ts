@@ -38,3 +38,5 @@ export function make(sampled?: boolean): Traceparent;
  * ```
  */
 export function parse(value: string): Traceparent;
+
+export function is_sampled(id: Traceparent): boolean;
