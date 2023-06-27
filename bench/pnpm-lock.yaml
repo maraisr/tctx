@@ -12,7 +12,7 @@ dependencies:
     specifier: file:../
     version: file:..
   trace-context:
-    specifier: ^2.1.0
+    specifier: 2.1.0
     version: 2.1.0
   traceparent:
     specifier: 1.0.0

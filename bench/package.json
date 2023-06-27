@@ -2,8 +2,8 @@
 	"type": "module",
 	"dependencies": {
 		"@marais/bench": "0.0.8",
-		"trace-context": "^2.1.0",
-		"traceparent": "1.0.0",
-		"tctx": "file:../"
+		"tctx": "file:../",
+		"trace-context": "2.1.0",
+		"traceparent": "1.0.0"
 	}
 }
