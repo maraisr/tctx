@@ -18,7 +18,7 @@ const to_hex = (arr: ArrayBuffer): string => {
 Anatomy of a Traceparent
 
 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
-^  ^                                ^                ^ 
+^  ^                                ^                ^
 |  |                                |                |
 |  |                                |                flags (2 hex)
 |  |                                parent-id (16 hex)
@@ -31,7 +31,7 @@ const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
 
-const SAMPLED_FLAG = 0b00000001;
+export const SAMPLED_FLAG = 0b00000001;
 
 const traceparent = (
 	version: string,
