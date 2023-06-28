@@ -1,59 +1,59 @@
 {
-	"name": "tctx",
-	"version": "0.0.13",
-	"description": "W3C Trace Contexts made simple",
-	"keywords": [
-		"tracecontext",
-		"traceparent",
-		"distributed",
-		"tracing",
-		"w3c"
-	],
-	"repository": "maraisr/tctx",
-	"license": "MIT",
-	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
-	"sideEffects": false,
-	"exports": {
-		".": {
-			"types": "./index.d.ts",
-			"import": "./index.mjs",
-			"require": "./index.js"
-		},
-		"./package.json": "./package.json"
-	},
-	"main": "./index.js",
-	"module": "./index.mjs",
-	"types": "index.d.ts",
-	"files": [
-		"index.mjs",
-		"index.js",
-		"index.d.ts"
-	],
-	"scripts": {
-		"bench": "tsm bench/index.ts",
-		"build": "bundt --minify",
-		"format": "prettier --write .",
-		"test": "uvu src \".test.ts$\" -r tsm",
-		"typecheck": "tsc --noEmit"
-	},
-	"prettier": "@marais/prettier",
-	"dependencies": {
-		"@lukeed/csprng": "^1.1.0"
-	},
-	"devDependencies": {
-		"@marais/prettier": "0.0.2",
-		"@marais/tsconfig": "0.0.4",
-		"@types/node": "20.3.2",
-		"bundt": "2.0.0-next.5",
-		"prettier": "2.8.8",
-		"tsm": "2.3.0",
-		"typescript": "5.1.3",
-		"uvu": "0.5.4"
-	},
-	"engines": {
-		"node": ">=14"
-	},
-	"volta": {
-		"node": "18.16.1"
-	}
+  "name": "tctx",
+  "version": "0.0.13",
+  "description": "W3C Trace Contexts made simple",
+  "keywords": [
+    "tracecontext",
+    "traceparent",
+    "distributed",
+    "tracing",
+    "w3c"
+  ],
+  "repository": "maraisr/tctx",
+  "license": "MIT",
+  "author": "Marais Rossow <me@marais.dev> (https://marais.io)",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.mjs",
+    "index.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "bench": "tsm bench/index.ts",
+    "build": "bundt --minify",
+    "format": "prettier --write .",
+    "test": "uvu src \".test.ts$\" -r tsm",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@marais/prettier",
+  "dependencies": {
+    "@lukeed/csprng": "^1.1.0"
+  },
+  "devDependencies": {
+    "@marais/prettier": "0.0.4",
+    "@marais/tsconfig": "0.0.4",
+    "@types/node": "20.3.2",
+    "bundt": "2.0.0-next.5",
+    "prettier": "2.8.8",
+    "tsm": "2.3.0",
+    "typescript": "5.1.3",
+    "uvu": "0.5.4"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "volta": {
+    "node": "18.16.1"
+  }
 }
