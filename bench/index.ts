@@ -12,7 +12,7 @@ const valid_id = (o: string) =>
 		o,
 	);
 
-suite(
+await suite(
 	{
 		tctx: () => () => String(tctx.make()),
 		traceparent: () => () => {
@@ -36,7 +36,7 @@ suite(
 	},
 );
 
-suite<string>(
+await suite<string>(
 	{
 		tctx: () => (input) => String(tctx.parse(input)),
 		traceparent: () => (input) => {
@@ -58,7 +58,7 @@ suite<string>(
 	},
 );
 
-suite(
+await suite(
 	{
 		tctx: () => {
 			const parent = tctx.make();
