@@ -19,7 +19,7 @@
   <img src="https://badgen.net/crates/d/traceparent?labelColor=black&color=black&label=crate downloads" alt="rust downloads"/>
 </a>
 
-<br /><br />
+<br><br>
 
 <sup>
 
