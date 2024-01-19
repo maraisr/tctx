@@ -11,6 +11,9 @@
 <a href="https://npm-stat.com/charts.html?package=tctx">
   <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
 </a>
+<a href="https://licenses.dev/npm/tctx">
+  <img src="https://licenses.dev/b/npm/tctx?style=dark" alt="licenses" />
+</a>
 <a href="https://bundlephobia.com/result?p=tctx">
   <img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
 </a>
