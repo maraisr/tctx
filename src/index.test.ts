@@ -10,6 +10,7 @@ test('exports', () => {
 	expect(lib.make).toBeTypeOf('function');
 	expect(lib.parse).toBeTypeOf('function');
 	expect(lib.is_sampled).toBeTypeOf('function');
+	expect(lib.is_randomed).toBeTypeOf('function');
 });
 
 test('allows getters on parts', () => {
@@ -25,9 +26,9 @@ test('valid id', () => {
 });
 
 test('make id sampled tests', () => {
-	expect(lib.make().flags).toBe(0b00000000);
-	expect(lib.make(true).flags).toBe(0b00000001);
-	expect(lib.make(false).flags).toBe(0b00000000);
+	expect(lib.make().flags).toBe(0b0000010);
+	expect(lib.make(true).flags).toBe(0b00000011);
+	expect(lib.make(false).flags).toBe(0b00000010);
 });
 
 test('parse string', () => {
@@ -58,6 +59,17 @@ test('child :: sampled ripple into children', () => {
 
 	expect(lib.is_sampled(parent)).toBeTrue();
 	expect(lib.is_sampled(child)).toBeTrue();
+});
+
+test('child :: random is rippled into children', () => {
+	const id = '00-12345678912345678912345678912345-00f067aa0ba902b7-01';
+	is_valid_id(id);
+
+	const parent = lib.parse(id)!;
+	expect(lib.is_randomed(parent)).toBeFalse();
+
+	const child = parent.child();
+	expect(lib.is_randomed(child)).toBeFalse();
 });
 
 test('child :: sampling doent affect parent', () => {

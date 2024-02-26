@@ -41,3 +41,6 @@ export function parse(value: string): Traceparent;
 
 export const FLAG_SAMPLE: number;
 export function is_sampled(id: Traceparent): boolean;
+
+export const FLAG_RANDOM: number;
+export function is_randomed(id: Traceparent): boolean;

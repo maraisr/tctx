@@ -32,6 +32,7 @@ const parent_id_size = 8;
 const W3C_TRACEPARENT_VERSION = '00';
 
 export const FLAG_SAMPLE = 0b00000001;
+export const FLAG_RANDOM = 0b00000010;
 
 const traceparent = (
 	version: string,
@@ -71,7 +72,7 @@ export function make(sampled: boolean = false) {
 		W3C_TRACEPARENT_VERSION,
 		to_hex(id.slice(0, trace_id_size)),
 		to_hex(id.slice(trace_id_size, total_size)),
-		sampled ? FLAG_SAMPLE : 0b00000000,
+		FLAG_RANDOM | (sampled ? FLAG_SAMPLE : 0),
 	);
 }
 
@@ -84,5 +85,9 @@ export function parse(value: string) {
 // ~> Utils
 
 export function is_sampled(id: Traceparent) {
-	return !!(id.flags & FLAG_SAMPLE);
+	return (id.flags & FLAG_SAMPLE) == FLAG_SAMPLE;
+}
+
+export function is_randomed(id: Traceparent) {
+	return (id.flags & FLAG_RANDOM) == FLAG_RANDOM;
 }
