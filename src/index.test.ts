@@ -9,6 +9,7 @@ function is_valid_id(id: string) {
 test('exports', () => {
 	expect(lib.make).toBeTypeOf('function');
 	expect(lib.parse).toBeTypeOf('function');
+	expect(lib.sample).toBeTypeOf('function');
 	expect(lib.is_sampled).toBeTypeOf('function');
 	expect(lib.is_randomed).toBeTypeOf('function');
 });
@@ -25,10 +26,8 @@ test('valid id', () => {
 	is_valid_id(String(lib.make()));
 });
 
-test('make id sampled tests', () => {
+test('make id default flags', () => {
 	expect(lib.make().flags).toBe(0b0000010);
-	expect(lib.make(true).flags).toBe(0b00000011);
-	expect(lib.make(false).flags).toBe(0b00000010);
 });
 
 test('parse string', () => {
@@ -51,17 +50,19 @@ test('child :: create', () => {
 	expect(String(parent)).not.toEqual(String(child));
 });
 
-test('child :: sampled ripple into children', () => {
-	const parent = lib.make(true);
+test('child :: sampled is reset on children', () => {
+	const parent = lib.make();
+	lib.sample(parent);
+
 	const child = parent.child();
 	is_valid_id(String(child));
 	is_valid_id(String(parent));
 
 	expect(lib.is_sampled(parent)).toBeTrue();
-	expect(lib.is_sampled(child)).toBeTrue();
+	expect(lib.is_sampled(child)).toBeFalse();
 });
 
-test('child :: random is rippled into children', () => {
+test('child :: random is rippled into children (false case)', () => {
 	const id = '00-12345678912345678912345678912345-00f067aa0ba902b7-01';
 	is_valid_id(id);
 
@@ -72,26 +73,53 @@ test('child :: random is rippled into children', () => {
 	expect(lib.is_randomed(child)).toBeFalse();
 });
 
-test('child :: sampling doent affect parent', () => {
-	const parent = lib.make(true);
-	expect(lib.is_sampled(parent)).toBeTrue(); // parent should be sampled
+test('child :: random is rippled into children (true case)', () => {
+	const id = '00-12345678912345678912345678912345-00f067aa0ba902b7-03';
+	is_valid_id(id);
+
+	const parent = lib.parse(id)!;
+	expect(lib.is_randomed(parent)).toBeTrue();
+
 	const child = parent.child();
-	expect(lib.is_sampled(child)).toBeTrue(); // child should inherit sampling
-	const child2 = child.child(false);
-	expect(lib.is_sampled(child2)).toBeFalse(); // child2 shouldnt be sampled
-	expect(lib.is_sampled(child)).toBeTrue(); // child should still be sampled
-	expect(lib.is_sampled(parent)).toBeTrue(); // parent should still be sampled
-	const child3 = child2.child(true);
-	expect(lib.is_sampled(child3)).toBeTrue(); // child3 should be sampled
-	expect(lib.is_sampled(child2)).toBeFalse(); // child2 should still be sampled
+	expect(lib.is_randomed(child)).toBeTrue();
+});
+
+test('child :: flag behaviour on children', () => {
+	const parent = lib.make();
+	lib.sample(parent);
+
+	expect(lib.is_sampled(parent)).toBeTrue();
+
+	const child = parent.child();
+	expect(lib.is_sampled(child)).toBeFalse();
+
+	const child2 = child.child();
+	expect(lib.is_sampled(child2)).toBeFalse();
+	expect(lib.is_sampled(child)).toBeFalse();
+	expect(lib.is_sampled(parent)).toBeTrue();
+
+	const child3 = child2.child();
+	lib.sample(child3);
+	expect(lib.is_sampled(child3)).toBeTrue();
+	expect(lib.is_sampled(child2)).toBeFalse();
 });
 
 test('util :: is_sampled', () => {
-	const id = lib.make(true);
+	const id = lib.make();
+	id.flags = lib.FLAG_SAMPLE;
 	expect(lib.is_sampled(id)).toBeTrue();
 
 	id.flags = 0b00000000;
 	expect(lib.is_sampled(id)).toBeFalse();
+});
+
+test('util :: is_random', () => {
+	const id = lib.make();
+	id.flags = lib.FLAG_RANDOM | lib.FLAG_SAMPLE;
+	expect(lib.is_randomed(id)).toBeTrue();
+
+	id.flags = 0b00000000;
+	expect(lib.is_randomed(id)).toBeFalse();
 });
 
 test('use-case :: graph completes', () => {

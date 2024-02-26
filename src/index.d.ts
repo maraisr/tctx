@@ -4,7 +4,7 @@ export interface Traceparent {
 	parent_id: string;
 	flags: number;
 
-	child(sampled?: boolean): Traceparent;
+	child(): Traceparent;
 
 	toString(): string;
 }
@@ -20,11 +20,8 @@ export interface Traceparent {
  * const child = id.child();
  * String(child); // 00-aa3ee2e08eb134a292fb799969f2de62-5402ac6f6874d505-00
  * ```
- *
- * @param [sampled=true] sets the sampling of the traceparent (eg the last -00, or -01)
- *                 typically used when the creator doesnt emit to the collector.
  */
-export function make(sampled?: boolean): Traceparent;
+export function make(): Traceparent;
 
 /**
  * Allows you to parse an incoming value into the areas, easy for a server to continue the trace chain.
@@ -38,6 +35,8 @@ export function make(sampled?: boolean): Traceparent;
  * ```
  */
 export function parse(value: string): Traceparent;
+
+export function sample(id: Traceparent): Traceparent;
 
 export const FLAG_SAMPLE: number;
 export function is_sampled(id: Traceparent): boolean;

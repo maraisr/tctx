@@ -45,16 +45,12 @@ const traceparent = (
 	parent_id,
 	flags,
 
-	child(sampled) {
+	child() {
 		return traceparent(
 			this.version,
 			this.trace_id,
 			to_hex(random(parent_id_size)),
-			sampled === undefined
-				? this.flags
-				: sampled
-				? this.flags | FLAG_SAMPLE
-				: this.flags & ~FLAG_SAMPLE,
+			this.flags & ~FLAG_SAMPLE,
 		);
 	},
 
@@ -64,7 +60,7 @@ const traceparent = (
 	},
 });
 
-export function make(sampled: boolean = false) {
+export function make() {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
 
@@ -72,7 +68,7 @@ export function make(sampled: boolean = false) {
 		W3C_TRACEPARENT_VERSION,
 		to_hex(id.slice(0, trace_id_size)),
 		to_hex(id.slice(trace_id_size, total_size)),
-		FLAG_RANDOM | (sampled ? FLAG_SAMPLE : 0),
+		FLAG_RANDOM,
 	);
 }
 
@@ -83,6 +79,10 @@ export function parse(value: string) {
 }
 
 // ~> Utils
+
+export function sample(id: Traceparent) {
+	id.flags |= FLAG_SAMPLE;
+}
 
 export function is_sampled(id: Traceparent) {
 	return (id.flags & FLAG_SAMPLE) == FLAG_SAMPLE;
