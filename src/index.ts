@@ -31,7 +31,7 @@ const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
 
-export const SAMPLED_FLAG = 0b00000001;
+export const FLAG_SAMPLE = 0b00000001;
 
 const traceparent = (
 	version: string,
@@ -52,8 +52,8 @@ const traceparent = (
 			sampled === undefined
 				? this.flags
 				: sampled
-				? this.flags | SAMPLED_FLAG
-				: this.flags & ~SAMPLED_FLAG,
+				? this.flags | FLAG_SAMPLE
+				: this.flags & ~FLAG_SAMPLE,
 		);
 	},
 
@@ -71,7 +71,7 @@ export function make(sampled: boolean = false) {
 		W3C_TRACEPARENT_VERSION,
 		to_hex(id.slice(0, trace_id_size)),
 		to_hex(id.slice(trace_id_size, total_size)),
-		sampled ? SAMPLED_FLAG : 0b00000000,
+		sampled ? FLAG_SAMPLE : 0b00000000,
 	);
 }
 
@@ -84,5 +84,5 @@ export function parse(value: string) {
 // ~> Utils
 
 export function is_sampled(id: Traceparent) {
-	return !!(id.flags & SAMPLED_FLAG);
+	return !!(id.flags & FLAG_SAMPLE);
 }

@@ -39,5 +39,5 @@ export function make(sampled?: boolean): Traceparent;
  */
 export function parse(value: string): Traceparent;
 
-export const SAMPLED_FLAG: number;
+export const FLAG_SAMPLE: number;
 export function is_sampled(id: Traceparent): boolean;
