@@ -7,30 +7,29 @@ on:
 
 jobs:
   test_js:
-    name: Node.js v${{ matrix.node }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16, 18, 20]
     steps:
       - uses: actions/checkout@main
 
-      - name: (env) setup pnpm
-        uses: pnpm/action-setup@master
+      - name: (env) setup bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 8.6.5
+          bun-version: 1.0.18
 
-      - name: (env) setup node v${{ matrix.node }}
-        uses: actions/setup-node@main
+      - name: (env) cache
+        uses: actions/cache@v3
         with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
-          check-latest: true
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-${{ hashFiles('package.json') }}
 
-      - run: pnpm install --ignore-scripts
-      - run: pnpm run build
-      - run: pnpm run test
-      - run: pnpm run typecheck
+      - name: (env) globals
+        run: bun add -g oxlint
+
+      - run: bun install
+      - run: oxlint .
+      - run: bun run build
+      - run: bun run typecheck
+      - run: bun test
 
   test_rs:
     name: Rust ${{ matrix.rustv }}
