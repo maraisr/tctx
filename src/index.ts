@@ -1,18 +1,21 @@
-import { random } from '@lukeed/csprng';
+import { random as r } from '@lukeed/csprng';
 import type { Traceparent } from 'tctx';
 
 let IDX = 256,
 	HEX: string[] = [];
 for (; IDX--; ) HEX[IDX] = (IDX + 256).toString(16).substring(1);
 
-/*#__INLINE__*/
-const to_hex = (arr: Uint8Array): string => {
+function to_hex(arr: Uint8Array) {
 	let i = 0,
 		output = '';
 	// @ts-ignore
 	for (; i < arr.length; i++) output += HEX[arr[i]];
 	return output;
 };
+
+function random(size: number) {
+	return /*#__INLINE__*/ to_hex(r(size));
+}
 
 /*
 Anatomy of a Traceparent
@@ -25,9 +28,6 @@ Anatomy of a Traceparent
 |  trace-id (32 hex)
 version (2 hex)
 */
-
-const trace_id_size = 16;
-const parent_id_size = 8;
 
 const W3C_TRACEPARENT_VERSION = '00';
 
@@ -49,7 +49,7 @@ const traceparent = (
 		return traceparent(
 			this.version,
 			this.trace_id,
-			to_hex(random(parent_id_size)),
+			random(8),
 			this.flags & ~FLAG_SAMPLE,
 		);
 	},
@@ -61,13 +61,11 @@ const traceparent = (
 });
 
 export function make() {
-	const total_size = trace_id_size + parent_id_size;
-	const id = random(total_size);
-
+	const id = random(24);
 	return traceparent(
 		W3C_TRACEPARENT_VERSION,
-		to_hex(id.slice(0, trace_id_size)),
-		to_hex(id.slice(trace_id_size, total_size)),
+		id.slice(0, 32),
+		id.slice(32),
 		FLAG_RANDOM,
 	);
 }
