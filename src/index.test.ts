@@ -1,27 +1,23 @@
 import * as lib from '.';
 
-import { test } from 'uvu';
-import * as assert from 'uvu/assert';
+import { test, expect } from 'bun:test';
 
-const is_valid_id = (id: string) =>
-	assert.match(
-		id,
-		/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/,
-		'id required to match valid regex',
-	);
+function is_valid_id(id: string) {
+	expect(id).toMatch(/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/);
+}
 
 test('exports', () => {
-	assert.type(lib.make, 'function');
-	assert.type(lib.parse, 'function');
-	assert.type(lib.is_sampled, 'function');
+	expect(lib.make).toBeTypeOf('function');
+	expect(lib.parse).toBeTypeOf('function');
+	expect(lib.is_sampled).toBeTypeOf('function');
 });
 
 test('allows getters on parts', () => {
 	const t = lib.make();
-	assert.type(t.version, 'string');
-	assert.type(t.trace_id, 'string');
-	assert.type(t.parent_id, 'string');
-	assert.type(t.flags, 'number');
+	expect(t.version).toBeTypeOf('string');
+	expect(t.trace_id).toBeTypeOf('string');
+	expect(t.parent_id).toBeTypeOf('string');
+	expect(t.flags).toBeTypeOf('number');
 });
 
 test('valid id', () => {
@@ -29,9 +25,9 @@ test('valid id', () => {
 });
 
 test('make id sampled tests', () => {
-	assert.is(lib.make().flags, 0b00000001);
-	assert.is(lib.make(true).flags, 0b00000001);
-	assert.is(lib.make(false).flags, 0b00000000);
+	expect(lib.make().flags).toBe(0b00000001);
+	expect(lib.make(true).flags).toBe(0b00000001);
+	expect(lib.make(false).flags).toBe(0b00000000);
 });
 
 test('parse string', () => {
@@ -39,10 +35,10 @@ test('parse string', () => {
 	is_valid_id(id);
 
 	const t = lib.parse(id)!;
-	assert.equal(t.version, '00');
-	assert.equal(t.trace_id, '4bf92f3577b34da6a3ce929d0e0e4736');
-	assert.equal(t.parent_id, '00f067aa0ba902b7');
-	assert.equal(t.flags, 0b00000001);
+	expect(t.version).toEqual('00');
+	expect(t.trace_id).toEqual('4bf92f3577b34da6a3ce929d0e0e4736');
+	expect(t.parent_id).toEqual('00f067aa0ba902b7');
+	expect(t.flags).toEqual(0b00000001);
 });
 
 test('child :: create', () => {
@@ -51,7 +47,7 @@ test('child :: create', () => {
 	is_valid_id(String(parent));
 	is_valid_id(String(child));
 
-	assert.not.equal(String(parent), String(child));
+	expect(String(parent)).not.toEqual(String(child));
 });
 
 test('child :: sampled ripple into children', () => {
@@ -60,30 +56,30 @@ test('child :: sampled ripple into children', () => {
 	is_valid_id(String(child));
 	is_valid_id(String(parent));
 
-	assert.is(lib.is_sampled(parent), true);
-	assert.is(lib.is_sampled(child), true);
+	expect(lib.is_sampled(parent)).toBeTrue();
+	expect(lib.is_sampled(child)).toBeTrue();
 });
 
 test('child :: sampling doent affect parent', () => {
 	const parent = lib.make(true);
-	assert.is(lib.is_sampled(parent), true, 'parent should be sampled');
+	expect(lib.is_sampled(parent)).toBeTrue(); // parent should be sampled
 	const child = parent.child();
-	assert.is(lib.is_sampled(child), true, 'child should inherit sampling');
+	expect(lib.is_sampled(child)).toBeTrue(); // child should inherit sampling
 	const child2 = child.child(false);
-	assert.is(lib.is_sampled(child2), false, 'child2 shouldnt be sampled');
-	assert.is(lib.is_sampled(child), true, 'child should still be sampled');
-	assert.is(lib.is_sampled(parent), true, 'parent should still be sampled');
+	expect(lib.is_sampled(child2)).toBeFalse(); // child2 shouldnt be sampled
+	expect(lib.is_sampled(child)).toBeTrue(); // child should still be sampled
+	expect(lib.is_sampled(parent)).toBeTrue(); // parent should still be sampled
 	const child3 = child2.child(true);
-	assert.is(lib.is_sampled(child3), true, 'child3 should be sampled');
-	assert.is(lib.is_sampled(child2), false, 'child2 should still be sampled');
+	expect(lib.is_sampled(child3)).toBeTrue(); // child3 should be sampled
+	expect(lib.is_sampled(child2)).toBeFalse(); // child2 should still be sampled
 });
 
 test('util :: is_sampled', () => {
 	const id = lib.make();
-	assert.is(lib.is_sampled(id), true);
+	expect(lib.is_sampled(id)).toBeTrue();
 
 	id.flags = 0b00000000;
-	assert.is(lib.is_sampled(id), false);
+	expect(lib.is_sampled(id)).toBeFalse();
 });
 
 test('use-case :: graph completes', () => {
@@ -103,7 +99,7 @@ test('use-case :: graph completes', () => {
 	// A -> [B -> [C, D], E]
 	fn('a', [fn('b', [fn('c'), fn('d')]), fn('e')])();
 
-	assert.equal(Object.keys(graph), ['root', 'a', 'b', 'c', 'd', 'e']);
+	expect(Object.keys(graph)).toEqual(['root', 'a', 'b', 'c', 'd', 'e']);
 
 	for (const letter of Object.keys(graph)) {
 		if (letter === 'root') continue;
@@ -111,22 +107,20 @@ test('use-case :: graph completes', () => {
 
 		switch (letter) {
 			case 'a':
-				assert.equal(parent, graph.root);
+				expect(parent).toEqual(graph.root);
 				break;
 			case 'b':
-				assert.equal(parent, graph.a.me);
+				expect(parent).toEqual(graph.a.me);
 				break;
 			case 'c':
-				assert.equal(parent, graph.b.me);
+				expect(parent).toEqual(graph.b.me);
 				break;
 			case 'd':
-				assert.equal(parent, graph.b.me);
+				expect(parent).toEqual(graph.b.me);
 				break;
 			case 'e':
-				assert.equal(parent, graph.a.me);
+				expect(parent).toEqual(graph.a.me);
 				break;
 		}
 	}
 });
-
-test.run();
