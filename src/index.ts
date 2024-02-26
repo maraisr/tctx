@@ -34,34 +34,36 @@ const W3C_TRACEPARENT_VERSION = '00';
 export const FLAG_SAMPLE = 0b00000001;
 export const FLAG_RANDOM = 0b00000010;
 
-const traceparent = (
+function traceparent(
 	version: string,
 	trace_id: string,
 	parent_id: string,
 	flags: number,
-): Traceparent => ({
-	version,
-	trace_id,
-	parent_id,
-	flags,
+): Traceparent {
+	return {
+		version,
+		trace_id,
+		parent_id,
+		flags,
 
-	child() {
-		return traceparent(
-			this.version,
-			this.trace_id,
-			random(8),
-			this.flags & ~FLAG_SAMPLE,
-		);
-	},
+		child() {
+			return traceparent(
+				this.version,
+				this.trace_id,
+				random(8),
+				this.flags & ~FLAG_SAMPLE,
+			);
+		},
 
-	toString() {
-		const flags = this.flags.toString(16).padStart(2, '0');
-		return `${this.version}-${this.trace_id}-${this.parent_id}-${flags}`;
-	},
-});
+		toString() {
+			let flags = this.flags.toString(16).padStart(2, '0');
+			return `${this.version}-${this.trace_id}-${this.parent_id}-${flags}`;
+		}
+	}
+}
 
 export function make() {
-	const id = random(24);
+	let id = random(24);
 	return traceparent(
 		W3C_TRACEPARENT_VERSION,
 		id.slice(0, 32),
@@ -72,7 +74,7 @@ export function make() {
 
 export function parse(value: string) {
 	if (value.length > 55) return null;
-	const segs = value.split('-');
+	let segs = value.split('-');
 	return traceparent(segs[0], segs[1], segs[2], parseInt(segs[3], 16));
 }
 
