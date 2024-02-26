@@ -63,7 +63,7 @@ const traceparent = (
 	},
 });
 
-export function make(sampled: boolean = true) {
+export function make(sampled: boolean = false) {
 	const total_size = trace_id_size + parent_id_size;
 	const id = random(total_size);
 

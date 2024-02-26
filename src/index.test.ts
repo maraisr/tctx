@@ -25,7 +25,7 @@ test('valid id', () => {
 });
 
 test('make id sampled tests', () => {
-	expect(lib.make().flags).toBe(0b00000001);
+	expect(lib.make().flags).toBe(0b00000000);
 	expect(lib.make(true).flags).toBe(0b00000001);
 	expect(lib.make(false).flags).toBe(0b00000000);
 });
@@ -75,7 +75,7 @@ test('child :: sampling doent affect parent', () => {
 });
 
 test('util :: is_sampled', () => {
-	const id = lib.make();
+	const id = lib.make(true);
 	expect(lib.is_sampled(id)).toBeTrue();
 
 	id.flags = 0b00000000;
