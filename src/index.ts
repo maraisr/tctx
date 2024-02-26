@@ -6,7 +6,7 @@ let IDX = 256,
 for (; IDX--; ) HEX[IDX] = (IDX + 256).toString(16).substring(1);
 
 /*#__INLINE__*/
-const to_hex = (arr: ArrayBuffer): string => {
+const to_hex = (arr: Uint8Array): string => {
 	let i = 0,
 		output = '';
 	// @ts-ignore
