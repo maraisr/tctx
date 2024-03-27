@@ -42,7 +42,7 @@ function traceparent(version: string, trace_id: string, parent_id: string, flags
 		flags,
 
 		child() {
-			return traceparent(this.version, this.trace_id, random(8), this.flags & ~FLAG_SAMPLE);
+			return traceparent(this.version, this.trace_id, random(8), this.flags | FLAG_SAMPLE);
 		},
 
 		toString() {
@@ -54,7 +54,7 @@ function traceparent(version: string, trace_id: string, parent_id: string, flags
 
 export function make() {
 	let id = random(24);
-	return traceparent(W3C_TRACEPARENT_VERSION, id.slice(0, 32), id.slice(32), FLAG_RANDOM);
+	return traceparent(W3C_TRACEPARENT_VERSION, id.slice(0, 32), id.slice(32), FLAG_SAMPLE | FLAG_RANDOM);
 }
 
 export function parse(value: string) {
@@ -67,6 +67,10 @@ export function parse(value: string) {
 
 export function sample(id: Traceparent) {
 	id.flags |= FLAG_SAMPLE;
+}
+
+export function unsample(id: Traceparent) {
+	id.flags &= ~FLAG_SAMPLE;
 }
 
 export function is_sampled(id: Traceparent) {

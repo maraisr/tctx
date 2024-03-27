@@ -10,6 +10,7 @@ test('exports', () => {
 	expect(lib.make).toBeTypeOf('function');
 	expect(lib.parse).toBeTypeOf('function');
 	expect(lib.sample).toBeTypeOf('function');
+	expect(lib.unsample).toBeTypeOf('function');
 	expect(lib.is_sampled).toBeTypeOf('function');
 	expect(lib.is_randomed).toBeTypeOf('function');
 });
@@ -27,7 +28,7 @@ test('valid id', () => {
 });
 
 test('make id default flags', () => {
-	expect(lib.make().flags).toBe(0b0000010);
+	expect(lib.make().flags).toBe(0b0000011);
 });
 
 test('parse string', () => {
@@ -50,16 +51,15 @@ test('child :: create', () => {
 	expect(String(parent)).not.toEqual(String(child));
 });
 
-test('child :: sampled is reset on children', () => {
+test('child :: sampled by deafult, so should be on children', () => {
 	const parent = lib.make();
-	lib.sample(parent);
 
 	const child = parent.child();
 	is_valid_id(String(child));
 	is_valid_id(String(parent));
 
 	expect(lib.is_sampled(parent)).toBeTrue();
-	expect(lib.is_sampled(child)).toBeFalse();
+	expect(lib.is_sampled(child)).toBeTrue();
 });
 
 test('child :: random is rippled into children (false case)', () => {
@@ -86,22 +86,31 @@ test('child :: random is rippled into children (true case)', () => {
 
 test('child :: flag behaviour on children', () => {
 	const parent = lib.make();
-	lib.sample(parent);
 
 	expect(lib.is_sampled(parent)).toBeTrue();
+	expect(lib.is_randomed(parent)).toBeTrue();
 
 	const child = parent.child();
-	expect(lib.is_sampled(child)).toBeFalse();
+	expect(lib.is_randomed(child)).toBeTrue();
+	expect(lib.is_sampled(child)).toBeTrue();
 
 	const child2 = child.child();
+	lib.unsample(child2);
 	expect(lib.is_sampled(child2)).toBeFalse();
-	expect(lib.is_sampled(child)).toBeFalse();
+	expect(lib.is_sampled(child)).toBeTrue();
 	expect(lib.is_sampled(parent)).toBeTrue();
 
 	const child3 = child2.child();
-	lib.sample(child3);
 	expect(lib.is_sampled(child3)).toBeTrue();
 	expect(lib.is_sampled(child2)).toBeFalse();
+
+	const parent2 = lib.parse('00-12345678912345678912345678912345-1111111111111111-00')!;
+	expect(lib.is_sampled(parent2)).toBeFalse();
+	expect(lib.is_randomed(parent2)).toBeFalse();
+
+	const child4 = parent2.child();
+	expect(lib.is_sampled(child4)).toBeTrue();
+	expect(lib.is_randomed(child4)).toBeFalse();
 });
 
 test('util :: is_sampled', () => {
