@@ -17,5 +17,5 @@ node_modules
 /index.d.ts
 
 # Rust
-!/Cargo.lock
-/target
+!Cargo.lock
+target

@@ -6,7 +6,7 @@
 
 </samp>
 
-**W3C Traceparents in Rust and JavaScript**
+**W3C Traceparents JavaScript**
 
 <a href="https://npm-stat.com/charts.html?package=tctx">
   <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
@@ -16,10 +16,6 @@
 </a>
 <a href="https://bundlephobia.com/result?p=tctx">
   <img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
-</a>
-
-<a href="https://crates.io/crates/traceparent">
-  <img src="https://badgen.net/crates/d/traceparent?labelColor=black&color=black&label=crate downloads" alt="rust downloads"/>
 </a>
 
 <br><br>
@@ -37,9 +33,7 @@ This is free to use software, but if you do like it, consisder supporting me ❤
 
 ## ⚙️ Install
 
-👉 `npm add tctx`
-
-👉 `cargo add traceparent`
+`npm add tctx`
 
 ## 🚀 Usage
 
@@ -59,12 +53,10 @@ fetch('/api', {
 import { parse } from 'tctx';
 
 const parent = parse(request.headers.traceparent);
-// Passing true will mark the traceparent as sampled — ends with 01.
-const id = parent.child(true);
 
 fetch('/downstream', {
   headers: {
-    traceparent: id,
+    traceparent: parent.child(),
   },
 });
 ```
