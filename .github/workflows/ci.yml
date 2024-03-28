@@ -10,11 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
+        with:
+          submodules: recursive
 
       - name: (env) setup bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.0.18
+          bun-version: '1.0.35'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
 
       - name: (env) cache
         uses: actions/cache@v3
@@ -30,6 +37,10 @@ jobs:
       - run: bun run build
       - run: bun run typecheck
       - run: bun test
+      
+      - run: pip install -r ./validation/requirements.txt
+      - name: w3c validation test
+        run: ./validation/test.sh
 
   test_rs:
     name: Rust ${{ matrix.rustv }}
