@@ -6,7 +6,7 @@
 
 </samp>
 
-**W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple **
+**W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple**
 
 <a href="https://npm-stat.com/charts.html?package=tctx">
   <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
