@@ -47,11 +47,8 @@
   },
   "devDependencies": {
     "@marais/tsconfig": "0.0.4",
-    "@types/bun": "1.0.7",
+    "@types/bun": "1.0.11",
     "bundt": "2.0.0-next.5",
-    "typescript": "5.1.6"
-  },
-  "engines": {
-    "node": ">=14"
+    "typescript": "5.4.3"
   }
 }
