@@ -2,11 +2,11 @@
 
 <samp>
 
-# traceparent
+# trace context
 
 </samp>
 
-**W3C Traceparents JavaScript**
+**W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple **
 
 <a href="https://npm-stat.com/charts.html?package=tctx">
   <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
@@ -40,23 +40,29 @@ This is free to use software, but if you do like it, consisder supporting me ❤
 ```ts
 // producer
 
-import { make } from 'tctx';
+import * as traceparent from 'tctx';
+import * as tracestate from 'tctx/tracestate';
 
 fetch('/api', {
   headers: {
-    traceparent: make(),
+    traceparent: traceparent.make(),
+    tracestate: tracestate.make({ key: 'value' }),
   },
 });
 
 // consumer
 
-import { parse } from 'tctx';
+import * as traceparent from 'tctx';
+import * as tracestate from 'tctx/tracestate';
 
-const parent = parse(request.headers.traceparent);
+const parent_key = traceparent.parse(request.headers.traceparent);
+const parent_state = tracestate.parse(request.headers.tracestate);
+parent_state.set("vendor", "value");
 
 fetch('/downstream', {
   headers: {
     traceparent: parent.child(),
+    tracestate: parent_state,
   },
 });
 ```
