@@ -3,9 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "tctx": ["src/index.d.ts"]
+      "tctx": ["src/index.d.ts"],
+      "tctx/*": ["src/*.d.ts"]
     }
   },
-  "include": ["src", "test"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
   "exclude": ["node_modules"]
 }

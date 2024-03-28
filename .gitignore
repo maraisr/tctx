@@ -15,6 +15,7 @@ node_modules
 /index.mjs
 /index.js
 /index.d.ts
+/trace*
 
 # Rust
 !Cargo.lock

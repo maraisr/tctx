@@ -19,15 +19,23 @@
       "import": "./index.mjs",
       "require": "./index.js"
     },
+    "./tracestate": {
+      "types": "./tracestate.d.ts",
+      "import": "./tracestate.mjs",
+      "require": "./tracestate.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "./index.js",
   "module": "./index.mjs",
-  "types": "index.d.ts",
+  "types": "./index.d.ts",
   "files": [
     "index.mjs",
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "tracestate.mjs",
+    "tracestate.js",
+    "tracestate.d.ts"
   ],
   "scripts": {
     "bench": "tsm bench/index.ts",
