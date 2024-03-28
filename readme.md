@@ -40,7 +40,7 @@ This is free to use software, but if you do like it, consisder supporting me ❤
 ```ts
 // producer
 
-import * as traceparent from 'tctx';
+import * as traceparent from 'tctx/traceparent';
 import * as tracestate from 'tctx/tracestate';
 
 fetch('/api', {
@@ -52,7 +52,7 @@ fetch('/api', {
 
 // consumer
 
-import * as traceparent from 'tctx';
+import * as traceparent from 'tctx/traceparent';
 import * as tracestate from 'tctx/tracestate';
 
 const parent_key = traceparent.parse(request.headers.traceparent);

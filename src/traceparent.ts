@@ -1,5 +1,5 @@
 import { random as r } from '@lukeed/csprng';
-import type { Traceparent } from 'tctx';
+import type { Traceparent } from 'tctx/traceparent';
 
 /*
 Anatomy of a Traceparent
@@ -41,10 +41,36 @@ export function make() {
 	return traceparent(W3C_TRACEPARENT_VERSION, id.slice(0, 32), id.slice(32), FLAG_SAMPLE | FLAG_RANDOM);
 }
 
-export function parse(value: string) {
-	if (value.length > 55) return null;
+export function parse(value: string): Traceparent | null {
+	value = value.trim();
+	if (value.length < 55) return null;
+	if (~value.indexOf('_')) return null; // regex, \W is [0-9a-fA-F_] — with underscore as well, which we dont want
+
 	let segs = value.split('-');
-	return traceparent(segs[0], segs[1], segs[2], parseInt(segs[3], 16));
+
+	if (/\D/.test(segs[3])) return null;
+
+	let v: string = segs[0], t: string|null = segs[1], p: string|null = segs[2], f:string|number = segs[3];
+	
+	if (v.length > 2 || /\W/.test(v)) return null;
+	if (v === W3C_TRACEPARENT_VERSION && segs.length > 4) return null; // we know we are on version 00, so we should only have 4 segments
+
+	if (v === 'ff') return null;
+	else v = W3C_TRACEPARENT_VERSION; // we'll etiher parse as V0, or make it V0
+
+	if (t.length !== 32 || /\W/.test(t) || !/[^0]/.test(t)) t = null;
+	if (p.length !== 16 || /\W/.test(p) || !/[^0]/.test(p)) t = p = null;
+
+	if (f.length !== 2) return null;
+	else f = parseInt(segs[3], 16);
+
+	if (t == null || p == null) {
+		let id = random(24);
+		t ||= id.slice(0, 32);
+		p ||= id.slice(32);
+	}
+
+	return traceparent(v, t, p, f);
 }
 
 // -- Utils

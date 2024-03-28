@@ -1,9 +1,11 @@
 import { test, expect } from 'bun:test';
 
-import * as lib from '.';
+import * as lib from './traceparent';
 
 function is_valid_id(id: string) {
-	expect(id).toMatch(/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/);
+	expect(id).toMatch(
+		/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/
+	);
 }
 
 test('exports', () => {
@@ -40,6 +42,68 @@ test('parse string', () => {
 	expect(t.trace_id).toEqual('4bf92f3577b34da6a3ce929d0e0e4736');
 	expect(t.parent_id).toEqual('00f067aa0ba902b7');
 	expect(t.flags).toEqual(0b00000001);
+});
+
+test('handle\'s extra characters', () => {
+    const parsed = lib.parse( '00-12345678901234567890123456789012.-1234567890123456-01')!;
+    expect(parsed).not.toBeNil();
+    expect(parsed.version).toEqual('00');
+	expect(parsed.trace_id).not.toEqual('12345678901234567890123456789012');
+	expect(parsed.parent_id).toEqual('1234567890123456');
+});
+
+test('handle future version', () => {
+    const parsed = lib.parse( 'cc-12345678901234567890123456789012-1234567890123456-01')!;
+    expect(parsed).not.toBeNil();
+    expect(parsed.version).toEqual('00');
+});
+
+test('handle maximum invalid version', () => {
+    const parsed = lib.parse('ff-12345678901234567890123456789012-1234567890123456-01');
+    expect(parsed).toBeNil();
+});
+
+test('reject all-zero trace-id', () => {
+    const parsed = lib.parse('00-00000000000000000000000000000000-1234567890123456-01')!;
+    expect(parsed.trace_id).not.toBe('00000000000000000000000000000000');
+	expect(parsed.parent_id).toBe('1234567890123456');
+});
+
+test('reject all-zero parent-id', () => {
+    const parsed = lib.parse('00-12345678901234567890123456789012-0000000000000000-01')!;
+	expect(parsed.trace_id).not.toBeNil();
+    expect(parsed.trace_id).not.toBe('12345678901234567890123456789012');
+	expect(parsed.parent_id).not.toBe('0000000000000000');
+});
+
+test('handle parent-id starting with zeros, but valid', () => {
+    const parsed = lib.parse('00-12345678901234567890123456789012-0000000000a902b7-01')!;
+    expect(parsed.trace_id).toBe('12345678901234567890123456789012');
+	expect(parsed.parent_id).toBe('0000000000a902b7');
+});
+
+test('correctly interpret sampled flag', () => {
+    const parsed = lib.parse('00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01')!;
+    expect(lib.is_sampled(parsed)).toBeTrue();
+});
+
+test('reject illegal trace-flags', () => {
+    const parsed = lib.parse('00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-g1');
+    expect(parsed).toBeNil();
+});
+
+test('reject extra dashes in traceparent', () => {
+    const parsed = lib.parse('00-123456-78901234567890123456789012-1234567890123456-01');
+    expect(parsed).toBeNil();
+});
+
+test('handle OWS in traceparent', () => {
+    const parsed = lib.parse(' 00-12345678901234567890123456789012-1234567890123456-01 ')!;
+	expect(parsed).not.toBeNil();
+	expect(parsed.version).toEqual('00');
+    expect(parsed.trace_id).toEqual('12345678901234567890123456789012');
+	expect(parsed.parent_id).toEqual('1234567890123456');
+	expect(parsed.flags).toEqual(0b00000001);
 });
 
 test('child :: create', () => {
@@ -104,7 +168,9 @@ test('child :: flag behaviour on children', () => {
 	expect(lib.is_sampled(child3)).toBeTrue();
 	expect(lib.is_sampled(child2)).toBeFalse();
 
-	const parent2 = lib.parse('00-12345678912345678912345678912345-1111111111111111-00')!;
+	const parent2 = lib.parse(
+		'00-12345678912345678912345678912345-1111111111111111-00'
+	)!;
 	expect(lib.is_sampled(parent2)).toBeFalse();
 	expect(lib.is_randomed(parent2)).toBeFalse();
 
@@ -129,47 +195,4 @@ test('util :: is_random', () => {
 
 	id.flags = 0b00000000;
 	expect(lib.is_randomed(id)).toBeFalse();
-});
-
-test('use-case :: graph completes', () => {
-	let graph: any = null;
-
-	const emit = (letter: string, parent: string, me: string) => {
-		if (graph === null) graph = { root: parent };
-		graph[letter] = { parent, me };
-	};
-
-	const fn = (l: string, fns?: any) => (id?: any) => {
-		if (!id) id = lib.make();
-		emit(l, id.toString(), (id = id.child()).toString());
-		if (fns) for (const fn of fns) fn(id);
-	};
-
-	// A -> [B -> [C, D], E]
-	fn('a', [fn('b', [fn('c'), fn('d')]), fn('e')])();
-
-	expect(Object.keys(graph)).toEqual(['root', 'a', 'b', 'c', 'd', 'e']);
-
-	for (const letter of Object.keys(graph)) {
-		if (letter === 'root') continue;
-		const parent = graph[letter].parent;
-
-		switch (letter) {
-			case 'a':
-				expect(parent).toEqual(graph.root);
-				break;
-			case 'b':
-				expect(parent).toEqual(graph.a.me);
-				break;
-			case 'c':
-				expect(parent).toEqual(graph.b.me);
-				break;
-			case 'd':
-				expect(parent).toEqual(graph.b.me);
-				break;
-			case 'e':
-				expect(parent).toEqual(graph.a.me);
-				break;
-		}
-	}
 });

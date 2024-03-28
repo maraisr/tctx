@@ -1,6 +1,6 @@
 import { suite } from '@marais/bench';
 
-import * as tctx from 'tctx';
+import * as tctx from 'tctx/traceparent';
 import TraceParent from 'traceparent';
 import * as TraceContext from 'trace-context';
 

@@ -14,10 +14,10 @@
   "author": "Marais Rossow <me@marais.dev> (https://marais.io)",
   "sideEffects": false,
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.js"
+    "./traceparent": {
+      "types": "./traceparent.d.ts",
+      "import": "./traceparent.mjs",
+      "require": "./traceparent.js"
     },
     "./tracestate": {
       "types": "./tracestate.d.ts",
@@ -26,13 +26,13 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./index.js",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "main": "./traceparent.js",
+  "module": "./traceparent.mjs",
+  "types": "./traceparent.d.ts",
   "files": [
-    "index.mjs",
-    "index.js",
-    "index.d.ts",
+    "traceparent.mjs",
+    "traceparent.js",
+    "traceparent.d.ts",
     "tracestate.mjs",
     "tracestate.js",
     "tracestate.d.ts"
