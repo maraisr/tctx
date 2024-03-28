@@ -3,9 +3,7 @@ export interface Traceparent {
 	trace_id: string;
 	parent_id: string;
 	flags: number;
-
 	child(): Traceparent;
-
 	toString(): string;
 }
 
@@ -36,8 +34,8 @@ export function make(): Traceparent;
  */
 export function parse(value: string): Traceparent;
 
-export function sample(id: Traceparent): Traceparent;
-export function unsample(id: Traceparent): Traceparent;
+export function sample(id: Traceparent): void;
+export function unsample(id: Traceparent): void;
 
 export const FLAG_SAMPLE: number;
 export function is_sampled(id: Traceparent): boolean;
