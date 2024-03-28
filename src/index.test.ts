@@ -1,6 +1,6 @@
-import * as lib from '.';
-
 import { test, expect } from 'bun:test';
+
+import * as lib from '.';
 
 function is_valid_id(id: string) {
 	expect(id).toMatch(/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/);

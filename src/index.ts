@@ -1,21 +1,5 @@
-import { random as r } from "@lukeed/csprng";
-import type { Traceparent } from "tctx";
-
-let IDX = 256,
-	HEX: string[] = [];
-for (; IDX--; ) HEX[IDX] = (IDX + 256).toString(16).substring(1);
-
-function to_hex(arr: Uint8Array) {
-	let i = 0,
-		output = "";
-	// @ts-ignore
-	for (; i < arr.length; i++) output += HEX[arr[i]];
-	return output;
-}
-
-function random(size: number) {
-	return /*#__INLINE__*/ to_hex(r(size));
-}
+import { random as r } from '@lukeed/csprng';
+import type { Traceparent } from 'tctx';
 
 /*
 Anatomy of a Traceparent
@@ -29,7 +13,7 @@ Anatomy of a Traceparent
 version (2 hex)
 */
 
-const W3C_TRACEPARENT_VERSION = "00";
+const W3C_TRACEPARENT_VERSION = '00';
 
 export const FLAG_SAMPLE = 0b00000001;
 export const FLAG_RANDOM = 0b00000010;
@@ -46,7 +30,7 @@ function traceparent(version: string, trace_id: string, parent_id: string, flags
 		},
 
 		toString() {
-			let flags = this.flags.toString(16).padStart(2, "0");
+			let flags = this.flags.toString(16).padStart(2, '0');
 			return `${this.version}-${this.trace_id}-${this.parent_id}-${flags}`;
 		},
 	};
@@ -59,24 +43,22 @@ export function make() {
 
 export function parse(value: string) {
 	if (value.length > 55) return null;
-	let segs = value.split("-");
+	let segs = value.split('-');
 	return traceparent(segs[0], segs[1], segs[2], parseInt(segs[3], 16));
 }
 
-// ~> Utils
+// -- Utils
 
-export function sample(id: Traceparent) {
-	id.flags |= FLAG_SAMPLE;
-}
+export function sample(id: Traceparent) { id.flags |= FLAG_SAMPLE; }
+export function unsample(id: Traceparent) { id.flags &= ~FLAG_SAMPLE; }
+export function is_sampled(id: Traceparent) { return (id.flags & FLAG_SAMPLE) == FLAG_SAMPLE; }
+export function is_randomed(id: Traceparent) { return (id.flags & FLAG_RANDOM) == FLAG_RANDOM; }
 
-export function unsample(id: Traceparent) {
-	id.flags &= ~FLAG_SAMPLE;
-}
+let IDX = 256, HEX: string[] = [];
+for (; IDX--; ) HEX[IDX] = (IDX + 256).toString(16).substring(1);
 
-export function is_sampled(id: Traceparent) {
-	return (id.flags & FLAG_SAMPLE) == FLAG_SAMPLE;
-}
-
-export function is_randomed(id: Traceparent) {
-	return (id.flags & FLAG_RANDOM) == FLAG_RANDOM;
+function random(size: number) {
+	let a = r(size), i = 0, o = '';
+	for (; i < a.length; i++) o += HEX[a[i]];
+	return o;
 }
