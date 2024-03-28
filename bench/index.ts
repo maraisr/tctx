@@ -1,5 +1,4 @@
 import { suite } from '@marais/bench';
-import * as assert from 'uvu/assert';
 
 import * as tctx from 'tctx';
 import TraceParent from 'traceparent';

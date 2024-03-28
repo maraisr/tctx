@@ -38,7 +38,6 @@
     "tracestate.d.ts"
   ],
   "scripts": {
-    "bench": "tsm bench/index.ts",
     "build": "bundt --minify",
     "typecheck": "tsc --noEmit"
   },
