@@ -2,27 +2,17 @@
 
 <samp>
 
-# trace context
+# trace context [![licenses](https://licenses.dev/b/npm/tctx?style=dark)](https://licenses.dev/npm/tctx)
 
 </samp>
 
 **W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple**
 
-<a href="https://npm-stat.com/charts.html?package=tctx">
-  <img src="https://badgen.net/npm/dm/tctx?labelColor=black&color=black&label=npm downloads" alt="js downloads"/>
-</a>
-<a href="https://licenses.dev/npm/tctx">
-  <img src="https://licenses.dev/b/npm/tctx?style=dark" alt="licenses" />
-</a>
-<a href="https://bundlephobia.com/result?p=tctx">
-  <img src="https://badgen.net/bundlephobia/minzip/tctx?labelColor=black&color=black" alt="size"/>
-</a>
-
 <br><br>
 
 <sup>
 
-This is free to use software, but if you do like it, consisder supporting me ❤️
+This is free to use software, but if you do like it, consider supporting me ❤️
 
 [![sponsor me](https://badgen.net/badge/icon/sponsor?icon=github&label&color=gray)](https://github.com/sponsors/maraisr)
 [![buy me a coffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label&color=gray)](https://www.buymeacoffee.com/marais)
