@@ -100,7 +100,6 @@ export function make(): Traceparent {
  * Allows you to parse an incoming value into the areas, easy for a server to continue the trace chain.
  *
  * @example
- *
  * ```js
  * const parent = parse(req.headers.traceparent); // 00-aa3ee2e08eb134a292fb799969f2de62-62994ea4677bc463-00
  * const child = parent.child();

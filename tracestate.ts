@@ -1,13 +1,13 @@
 /**
- * A simple implementation of the W3C Trace Context specification level 2. @see https://www.w3.org/TR/trace-context-2/
+  * A simple implementation of the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification level 2}.
  *
  * This module provides a simple API for creating, parsing, and manipulating tracestate headers. You will probably also
- * be relying on the {@see import('./traceparent.ts')} module to create and parse traceparent headers.
+ * be relying on the {@link {import('./traceparent.ts')}} module to create and parse traceparent headers.
  *
  * Tracestates are effectivly a ring buffer of 32 key-value pairs, where the key is a string of up to 256 characters and
  * the value is a string of up to 256 characters. The key must be unique within the tracestate.
  *
- * Updateing the tracestate is done by calling the {@see Tracestate.set} method, which will update the value of the
+ * Updateing the tracestate is done by calling the {@link {Tracestate.set}} method, which will update the value of the
  * key if it exists (and move it to the front), or prepend a new key-value pair to the front of the tracestate. If the
  * tracestate is full, the oldest key-value pair will be removed.
  *
