@@ -8,8 +8,6 @@
 
 **W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple**
 
-<br><br>
-
 <sup>
 
 This is free to use software, but if you do like it, consider supporting me ❤️
@@ -23,6 +21,9 @@ This is free to use software, but if you do like it, consider supporting me ❤�
 
 ## ⚙️ Install
 
+> Avaliable on [jsr](https://jsr.io/@mr/tracecontext), [NPM](https://npmjs.com/package/tctx) and
+> [deno.land](https://deno.land/x/tracecontext)
+
 `npm add tctx`
 
 ## 🚀 Usage
@@ -34,10 +35,10 @@ import * as traceparent from 'tctx/traceparent';
 import * as tracestate from 'tctx/tracestate';
 
 fetch('/api', {
-  headers: {
-    traceparent: traceparent.make(),
-    tracestate: tracestate.make({ key: 'value' }),
-  },
+	headers: {
+		traceparent: traceparent.make(),
+		tracestate: tracestate.make({ key: 'value' }),
+	},
 });
 
 // consumer
@@ -47,35 +48,35 @@ import * as tracestate from 'tctx/tracestate';
 
 const parent_key = traceparent.parse(request.headers.traceparent);
 const parent_state = tracestate.parse(request.headers.tracestate);
-parent_state.set("vendor", "value");
+parent_state.set('vendor', 'value');
 
 fetch('/downstream', {
-  headers: {
-    traceparent: parent.child(),
-    tracestate: parent_state,
-  },
+	headers: {
+		traceparent: parent.child(),
+		tracestate: parent_state,
+	},
 });
 ```
 
 ## 💨 Benchmark
 
-> via the [`/bench`](/bench) directory with Node v21.7.1
+> via the [`/bench`](/bench) directory with deno 1.41.3
 
 ```
 #  make
-✔  tctx          ~ 532,641 ops/sec ± 0.17%
-✔  traceparent   ~ 119,325 ops/sec ± 0.16%
-✔  trace-context ~ 231,614 ops/sec ± 0.34%
+✔  tctx          ~ 1,666,269 ops/sec ± 0.04%
+✔  traceparent   ~   156,468 ops/sec ± 0.07%
+✔  trace-context ~   691,817 ops/sec ± 0.02%
 
 #  parse
-✔  tctx          ~ 8,284,422 ops/sec ± 0.71%
-✔  traceparent   ~   244,167 ops/sec ± 0.12%
-✔  trace-context ~ 4,040,319 ops/sec ± 0.07%
+✔  tctx          ~ 3,429,690 ops/sec ± 0.05%
+✔  traceparent   ~   186,418 ops/sec ± 0.07%
+✔  trace-context ~ 3,327,424 ops/sec ± 0.10%
 
 #  child
-✔  tctx          ~ 611,854 ops/sec ± 0.62%
-✔  traceparent   ~ 264,412 ops/sec ± 0.15%
-✔  trace-context ~ 498,430 ops/sec ± 0.37%
+✔  tctx          ~ 2,627,467 ops/sec ± 0.04%
+✔  traceparent   ~   256,958 ops/sec ± 0.10%
+✔  trace-context ~ 1,252,370 ops/sec ± 0.04%
 ```
 
 ## License

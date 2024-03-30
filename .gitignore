@@ -1,22 +1,5 @@
-node_modules
 .DS_Store
-*-lock.json
-*.lock
-*.log
-
-/coverage
-/.nyc_output
-
-# Editors
-*.iml
-/.idea
-/.vscode
-
-/index.mjs
-/index.js
-/index.d.ts
-/trace*
-
-# Rust
-!Cargo.lock
-target
+node_modules
+/npm
+*.lcov
+/cov

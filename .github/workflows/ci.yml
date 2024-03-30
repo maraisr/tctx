@@ -2,45 +2,46 @@ name: CI
 
 on:
   push:
-    branches: [main]
-  pull_request: {}
+  workflow_call:
 
 jobs:
-  test_js:
+  deno:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
         with:
-          submodules: recursive
+          deno-version: v1.x
 
-      - name: (env) setup bun
-        uses: oven-sh/setup-bun@v1
+      - run: deno fmt --check
+      - run: deno lint
+      - run: deno check **/*.ts
+
+      - name: Tests
+        run: |-
+          deno test --coverage=cov/
+          deno coverage cov/
+
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
         with:
-          bun-version: '1.0.35'
+          deno-version: v1.x
 
-      - uses: actions/setup-python@v5
+      - run: deno task build
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
         with:
-          python-version: '3.10'
-          cache: pip
+          deno-version: v1.x
 
-      - name: (env) cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-${{ hashFiles('package.json') }}
-
-      - name: (env) globals
-        run: bun add -g oxlint
-
-      - run: bun install
-      - run: oxlint .
-      - run: bun run build
-      - run: bun run typecheck
-      - run: bun test
-      
-      - run: pip install -r ./validation/requirements.txt
-      - name: w3c validation test
-        run: ./validation/test.sh
+      - run: deno run bench/index.ts
 
   test_rs:
     name: Rust ${{ matrix.rustv }}

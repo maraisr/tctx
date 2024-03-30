@@ -1,15 +1,17 @@
-import { suite } from '@marais/bench';
+import { suite } from 'npm:@marais/bench';
+import TraceParent from 'npm:traceparent';
+import * as TraceContext from 'npm:trace-context';
 
-import * as tctx from 'tctx/traceparent';
-import TraceParent from 'traceparent';
-import * as TraceContext from 'trace-context';
+import * as tctx from '../traceparent.ts';
 
 import { randomBytes } from 'node:crypto';
+import { Buffer } from 'node:buffer';
 
 const valid_id = (o: string) =>
-	/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/.test(
-		o,
-	);
+	/^((?![f]{2})[a-f0-9]{2})-((?![0]{32})[a-f0-9]{32})-((?![0]{16})[a-f0-9]{16})-([a-f0-9]{2})$/
+		.test(
+			o,
+		);
 
 await suite(
 	{
@@ -41,7 +43,7 @@ await suite<string>(
 		traceparent: () => (input) => {
 			return String(TraceParent.fromString(input));
 		},
-		['trace-context']: () => (input) => {
+		'trace-context': () => (input) => {
 			return TraceContext.http.serializeTraceParent(
 				TraceContext.http.parseTraceParent(input),
 			);
@@ -51,8 +53,7 @@ await suite<string>(
 		run(
 			'parse',
 			() => '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-			(o: string) =>
-				'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
+			(o: string) => '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01' === o,
 		);
 	},
 );
@@ -80,7 +81,7 @@ await suite(
 				return String(parent.child());
 			};
 		},
-		['trace-context']: () => {
+		'trace-context': () => {
 			const parent = TraceContext.TraceParent.random();
 
 			return () => {

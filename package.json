@@ -1,53 +1,53 @@
 {
-  "name": "tctx",
-  "version": "0.1.2",
-  "description": "W3C Trace Contexts made simple",
-  "keywords": [
-    "tracecontext",
-    "traceparent",
-    "distributed",
-    "tracing",
-    "w3c"
-  ],
-  "repository": "maraisr/tctx",
-  "license": "MIT",
-  "author": "Marais Rossow <me@marais.dev> (https://marais.io)",
-  "sideEffects": false,
-  "exports": {
-    "./traceparent": {
-      "types": "./traceparent.d.ts",
-      "import": "./traceparent.mjs",
-      "require": "./traceparent.js"
-    },
-    "./tracestate": {
-      "types": "./tracestate.d.ts",
-      "import": "./tracestate.mjs",
-      "require": "./tracestate.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./traceparent.js",
-  "module": "./traceparent.mjs",
-  "types": "./traceparent.d.ts",
-  "files": [
-    "traceparent.mjs",
-    "traceparent.js",
-    "traceparent.d.ts",
-    "tracestate.mjs",
-    "tracestate.js",
-    "tracestate.d.ts"
-  ],
-  "scripts": {
-    "build": "bundt --minify",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@lukeed/csprng": "^1.1.0"
-  },
-  "devDependencies": {
-    "@marais/tsconfig": "0.0.4",
-    "@types/bun": "1.0.11",
-    "bundt": "2.0.0-next.5",
-    "typescript": "5.4.3"
-  }
+	"name": "tctx",
+	"version": "0.1.2",
+	"description": "W3C Trace Contexts made simple",
+	"keywords": [
+		"tracecontext",
+		"traceparent",
+		"distributed",
+		"tracing",
+		"w3c"
+	],
+	"repository": "maraisr/tctx",
+	"license": "MIT",
+	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
+	"sideEffects": false,
+	"exports": {
+		"./traceparent": {
+			"types": "./traceparent.d.ts",
+			"import": "./traceparent.mjs",
+			"require": "./traceparent.js"
+		},
+		"./tracestate": {
+			"types": "./tracestate.d.ts",
+			"import": "./tracestate.mjs",
+			"require": "./tracestate.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"main": "./traceparent.js",
+	"module": "./traceparent.mjs",
+	"types": "./traceparent.d.ts",
+	"files": [
+		"traceparent.mjs",
+		"traceparent.js",
+		"traceparent.d.ts",
+		"tracestate.mjs",
+		"tracestate.js",
+		"tracestate.d.ts"
+	],
+	"scripts": {
+		"build": "bundt --minify",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@lukeed/csprng": "^1.1.0"
+	},
+	"devDependencies": {
+		"@marais/tsconfig": "0.0.4",
+		"@types/bun": "1.0.11",
+		"bundt": "2.0.0-next.5",
+		"typescript": "5.4.3"
+	}
 }
