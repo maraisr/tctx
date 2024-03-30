@@ -13,6 +13,9 @@ trap "kill $node_pid" EXIT
 
 until nc -z localhost 8000; do echo "Waiting for server to open port..."; sleep 1; done;
 
-env STRICT_LEVEL=1 python3 w3c/test/test.py http://localhost:8000/test || exit 1
+export STRICT_LEVEL=1
+export SPEC_LEVEL=2
+
+python3 w3c/test/test.py http://localhost:8000/test || exit 1
 
 kill $node_pid
