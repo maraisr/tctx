@@ -1,6 +1,4 @@
 /**
- * @module
- *
  * A simple implementation of the W3C Trace Context specification level 2.
  * @see https://www.w3.org/TR/trace-context-2/
  *
@@ -26,22 +24,30 @@
  *   headers: { traceparent: traceparent.child() }
  * })
  * ```
+ *
+ * @module
  */
 
 import { random as r } from 'npm:@lukeed/csprng@^1';
 
+/**
+ * The Traceparent type represents a W3C Trace Context traceparent header.
+ */
 export interface Traceparent {
 	version: string;
 	trace_id: string;
 	parent_id: string;
 	flags: number;
+	/** Branches the traceparent into a new child, creating a new {@link parent_id} */
 	child(): Traceparent;
 	toString(): string;
 }
 
 const W3C_TRACEPARENT_VERSION = '00';
 
+/** The bitmask represenging a sampled traceparent */
 export const FLAG_SAMPLE = 0b00000001;
+/** The bitmask representing a random traceparent */
 export const FLAG_RANDOM = 0b00000010;
 
 function traceparent(

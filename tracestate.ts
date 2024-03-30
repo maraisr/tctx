@@ -1,6 +1,4 @@
 /**
- * @module
- *
  * A simple implementation of the W3C Trace Context specification level 2. @see https://www.w3.org/TR/trace-context-2/
  *
  * This module provides a simple API for creating, parsing, and manipulating tracestate headers. You will probably also
@@ -36,8 +34,13 @@
  *   headers: { traceparent: traceparent.child(), tracestate }
  * })
  * ```
+ *
+ * @module
  */
 
+/**
+ * The Tracestate type represents a W3C Trace Context tracestate header, implemented as a ring buffer using a javascript {@link Map}.
+ */
 class Tracestate extends Map {
 	set(key: string, value: unknown): this {
 		if (!valid_key(key) || !valid_value(value)) throw new TypeError('Invalid key or value');
