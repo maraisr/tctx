@@ -1,10 +1,11 @@
+import { random as r } from 'npm:@lukeed/csprng@^1';
+
 /**
- * A simple implementation of the W3C Trace Context specification level 2.
- * @see https://www.w3.org/TR/trace-context-2/
+ * A simple implementation of the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification level 2}.
  *
  * This module provides a simple API for creating, parsing, and manipulating traceparent headers.
  *
- * The anatomy of a traceparent
+ * The anatomy of a traceparent:
  *
  * ```
  * 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
@@ -27,8 +28,6 @@
  *
  * @module
  */
-
-import { random as r } from 'npm:@lukeed/csprng@^1';
 
 /**
  * The Traceparent type represents a W3C Trace Context traceparent header.
