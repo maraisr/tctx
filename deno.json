@@ -30,6 +30,17 @@
 	},
 	"exclude": [
 		"npm",
+		"cargo",
 		"validation/w3c"
-	]
+	],
+	"publish": {
+		"include": [
+			"*.ts",
+			"license",
+			"readme.md"
+		],
+		"exclude": [
+			"*.test.ts"
+		]
+	}
 }
