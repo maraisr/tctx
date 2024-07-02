@@ -168,8 +168,8 @@ Deno.test('child :: flag behaviour on children', () => {
 	assert(lib.is_randomed(parent));
 
 	const child = parent.child();
-	assert(lib.is_randomed(child));
 	assert(lib.is_sampled(child));
+	assert(lib.is_randomed(child));
 
 	const child2 = child.child();
 	lib.unsample(child2);
