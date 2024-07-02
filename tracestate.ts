@@ -1,5 +1,5 @@
 /**
-  * A simple implementation of the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification level 2}.
+ * A simple implementation of the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification level 2}.
  *
  * This module provides a simple API for creating, parsing, and manipulating tracestate headers. You will probably also
  * be relying on the {@link {import('./traceparent.ts')}} module to create and parse traceparent headers.
