@@ -5,15 +5,21 @@ await emptyDir('./npm');
 await build({
 	entryPoints: [
 		'./mod.ts',
-		'./traceparent.ts',
-		'./tracestate.ts',
+		{
+			name: './traceparent',
+			path: './traceparent.ts'
+		},
+		{
+			name: './tracestate',
+			path: './tracestate.ts'
+		},
 	],
 	outDir: './npm',
 	shims: {
 		deno: 'dev',
 	},
 
-	declaration: 'inline',
+	declaration: 'separate',
 	declarationMap: false,
 	scriptModule: 'cjs',
 	typeCheck: 'both',
