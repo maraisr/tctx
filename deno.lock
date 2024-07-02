@@ -13,6 +13,7 @@
       "jsr:@std/io@^0.218.2": "jsr:@std/io@0.218.2",
       "jsr:@std/path@^0.218.2": "jsr:@std/path@0.218.2",
       "npm:@lukeed/csprng": "npm:@lukeed/csprng@1.1.0",
+      "npm:@lukeed/csprng@^1": "npm:@lukeed/csprng@1.1.0",
       "npm:@marais/bench": "npm:@marais/bench@0.0.8",
       "npm:@ts-morph/bootstrap@0.22": "npm:@ts-morph/bootstrap@0.22.0",
       "npm:@types/node": "npm:@types/node@18.16.19",
@@ -278,15 +279,6 @@
     "dependencies": [
       "jsr:@deno/dnt@^0.41.1",
       "jsr:@std/assert@^0.221.0"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:@lukeed/csprng@^1.1.0",
-        "npm:@marais/tsconfig@0.0.4",
-        "npm:@types/bun@1.0.11",
-        "npm:bundt@2.0.0-next.5",
-        "npm:typescript@5.4.3"
-      ]
-    }
+    ]
   }
 }
