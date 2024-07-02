@@ -7,11 +7,11 @@ await build({
 		'./mod.ts',
 		{
 			name: './traceparent',
-			path: './traceparent.ts'
+			path: './traceparent.ts',
 		},
 		{
 			name: './tracestate',
-			path: './tracestate.ts'
+			path: './tracestate.ts',
 		},
 	],
 	outDir: './npm',
