@@ -3,7 +3,11 @@ import { build, emptyDir } from '@deno/dnt';
 await emptyDir('./npm');
 
 await build({
-	entryPoints: ['./mod.ts'],
+	entryPoints: [
+		'./mod.ts',
+		'./traceparent.ts',
+		'./tracestate.ts',
+	],
 	outDir: './npm',
 	shims: {
 		deno: 'dev',
