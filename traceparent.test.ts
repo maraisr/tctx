@@ -178,7 +178,7 @@ Deno.test('child :: flag behaviour on children', () => {
 	assert(lib.is_sampled(parent));
 
 	const child3 = child2.child();
-	assert(lib.is_sampled(child3));
+	assert(lib.is_sampled(child3) === false);
 	assert(lib.is_sampled(child2) === false);
 
 	const parent2 = lib.parse(
@@ -188,8 +188,15 @@ Deno.test('child :: flag behaviour on children', () => {
 	assert(lib.is_randomed(parent2) === false);
 
 	const child4 = parent2.child();
-	assert(lib.is_sampled(child4));
+	assert(lib.is_sampled(child4) === false); // it should be inherited
 	assert(lib.is_randomed(child4) === false);
+
+	const parent3 = lib.parse(
+		'00-12345678912345678912345678912345-1111111111111111-01',
+	)!;
+
+	const child5 = parent3.child();
+	assert(lib.is_sampled(child5)); // it should be inherited
 });
 
 Deno.test('util :: is_sampled', () => {

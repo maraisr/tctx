@@ -37,7 +37,10 @@ export interface Traceparent {
 	trace_id: string;
 	parent_id: string;
 	flags: number;
-	/** Branches the traceparent into a new child, creating a new {@link parent_id} */
+	/**
+	 * Branches the traceparent into a new child, creating a new {@link parent_id}.
+	 * Note; All existing flags are copied over.
+	 */
 	child(): Traceparent;
 	toString(): string;
 }
@@ -62,7 +65,7 @@ function traceparent(
 		flags,
 
 		child() {
-			return traceparent(this.version, this.trace_id, random(8), this.flags | FLAG_SAMPLE);
+			return traceparent(this.version, this.trace_id, random(8), this.flags);
 		},
 
 		toString() {
