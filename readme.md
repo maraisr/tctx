@@ -2,11 +2,14 @@
 
 <samp>
 
-# trace context [![licenses](https://licenses.dev/b/npm/tctx?style=dark)](https://licenses.dev/npm/tctx)
+# trace context [![licenses](https://licenses.dev/b/npm/tctx?style=dark)](https://licenses.dev/npm/tctx) [![w3c spec compliant](https://badgen.net/static/w3c%20spec%20compliant/✓?color=black)](https://w3c.github.io/trace-context/)
 
 </samp>
 
 **W3C [Trace Context](https://w3c.github.io/trace-context/)'s made simple**
+
+<br>
+<br>
 
 <sup>
 
@@ -21,40 +24,38 @@ This is free to use software, but if you do like it, consider supporting me ❤�
 
 ## ⚙️ Install
 
-> Avaliable on [jsr](https://jsr.io/@mr/tracecontext), [NPM](https://npmjs.com/package/tctx) and
-> [deno.land](https://deno.land/x/tracecontext)
-
-`npm add tctx`
+- **npm** — available as [`tctx`](https://www.npmjs.com/package/tctx)
+- **JSR** — available as [`@mr/tracecontext`](https://jsr.io/@mr/tracecontext)
 
 ## 🚀 Usage
 
 ```ts
 // producer
 
-import * as traceparent from 'tctx/traceparent';
-import * as tracestate from 'tctx/tracestate';
+import * as traceparent from "tctx/traceparent";
+import * as tracestate from "tctx/tracestate";
 
-fetch('/api', {
-	headers: {
-		traceparent: traceparent.make(),
-		tracestate: tracestate.make({ key: 'value' }),
-	},
+fetch("/api", {
+  headers: {
+    traceparent: traceparent.make(),
+    tracestate: tracestate.make({ key: "value" }),
+  },
 });
 
 // consumer
 
-import * as traceparent from 'tctx/traceparent';
-import * as tracestate from 'tctx/tracestate';
+import * as traceparent from "tctx/traceparent";
+import * as tracestate from "tctx/tracestate";
 
 const parent_key = traceparent.parse(request.headers.traceparent);
 const parent_state = tracestate.parse(request.headers.tracestate);
-parent_state.set('vendor', 'value');
+parent_state.set("vendor", "value");
 
-fetch('/downstream', {
-	headers: {
-		traceparent: parent.child(),
-		tracestate: parent_state,
-	},
+fetch("/downstream", {
+  headers: {
+    traceparent: parent.child(),
+    tracestate: parent_state,
+  },
 });
 ```
 
