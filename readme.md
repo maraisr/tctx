@@ -32,52 +32,68 @@ This is free to use software, but if you do like it, consider supporting me ❤�
 ```ts
 // producer
 
-import * as traceparent from "tctx/traceparent";
-import * as tracestate from "tctx/tracestate";
+import * as traceparent from 'tctx/traceparent';
+import * as tracestate from 'tctx/tracestate';
 
-fetch("/api", {
-  headers: {
-    traceparent: traceparent.make(),
-    tracestate: tracestate.make({ key: "value" }),
-  },
+fetch('/api', {
+	headers: {
+		traceparent: traceparent.make(),
+		tracestate: tracestate.make({ key: 'value' }),
+	},
 });
 
 // consumer
 
-import * as traceparent from "tctx/traceparent";
-import * as tracestate from "tctx/tracestate";
+import * as traceparent from 'tctx/traceparent';
+import * as tracestate from 'tctx/tracestate';
 
 const parent_key = traceparent.parse(request.headers.traceparent);
 const parent_state = tracestate.parse(request.headers.tracestate);
-parent_state.set("vendor", "value");
+parent_state.set('vendor', 'value');
 
-fetch("/downstream", {
-  headers: {
-    traceparent: parent.child(),
-    tracestate: parent_state,
-  },
+fetch('/downstream', {
+	headers: {
+		traceparent: parent.child(),
+		tracestate: parent_state,
+	},
 });
 ```
 
 ## 💨 Benchmark
 
-> via the [`/bench`](/bench) directory with deno 1.41.3
-
 ```
-#  make
-✔  tctx          ~ 1,666,269 ops/sec ± 0.04%
-✔  traceparent   ~   156,468 ops/sec ± 0.07%
-✔  trace-context ~   691,817 ops/sec ± 0.02%
+benchmark          time (avg)        iter/s             (min … max)       p75       p99      p995
+------------------------------------------------------------------- -----------------------------
 
-#  parse
-✔  tctx          ~ 3,429,690 ops/sec ± 0.05%
-✔  traceparent   ~   186,418 ops/sec ± 0.07%
-✔  trace-context ~ 3,327,424 ops/sec ± 0.10%
+group make
+tctx              488.04 ns/iter   2,049,021.8  (477.8 ns … 540.92 ns) 490.45 ns 527.86 ns 540.92 ns
+traceparent         6.08 µs/iter     164,346.2     (5.88 µs … 6.46 µs) 6.17 µs 6.46 µs 6.46 µs
+trace-context       1.35 µs/iter     743,381.3     (1.33 µs … 1.46 µs) 1.35 µs 1.46 µs 1.46 µs
 
-#  child
-✔  tctx          ~ 2,627,467 ops/sec ± 0.04%
-✔  traceparent   ~   256,958 ops/sec ± 0.10%
-✔  trace-context ~ 1,252,370 ops/sec ± 0.04%
+summary
+  tctx
+   2.76x faster than trace-context
+   12.47x faster than traceparent
+
+group parse
+tctx              265.57 ns/iter   3,765,435.2 (260.82 ns … 285.88 ns) 269.13 ns 273.34 ns 285.88 ns
+traceparent         5.09 µs/iter     196,302.6     (4.88 µs … 5.36 µs) 5.18 µs 5.36 µs 5.36 µs
+trace-context     240.18 ns/iter   4,163,540.7 (237.21 ns … 300.23 ns) 238.89 ns 276.17 ns 297.94 ns
+
+summary
+  trace-context
+   1.11x faster than tctx
+   21.21x faster than traceparent
+
+group child
+tctx              724.74 ns/iter   1,379,804.8 (709.77 ns … 752.56 ns) 733.47 ns 752.56 ns 752.56 ns
+traceparent         8.18 µs/iter     122,254.2     (7.99 µs … 8.77 µs) 8.24 µs 8.77 µs 8.77 µs
+trace-context       1.99 µs/iter     502,728.4     (1.96 µs … 2.05 µs) 1.99 µs 2.05 µs 2.05 µs
+
+summary
+  tctx
+   2.74x faster than trace-context
+   11.29x faster than traceparent
 ```
 
 ## License
