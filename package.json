@@ -1,0 +1,30 @@
+{
+	"name": "tctx",
+	"version": "0.2.3",
+	"repository": "maraisr/tctx",
+	"description": "W3C Trace Contexts made simple",
+	"license": "MIT",
+	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
+	"keywords": [
+		"tracecontext",
+		"traceparent",
+		"distributed",
+		"tracing",
+		"w3c"
+	],
+	"sideEffects": false,
+	"exports": {
+		"./traceparent": {
+			"types": "./traceparent.d.mts",
+			"import": "./traceparent.mjs"
+		},
+		"./tracestate": {
+			"types": "./tracestate.d.mts",
+			"import": "./tracestate.mjs"
+		},
+		"./package.json": "./package.json"
+	},
+	"dependencies": {
+		"@lukeed/csprng": "^1"
+	}
+}

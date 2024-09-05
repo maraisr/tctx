@@ -1,67 +1,81 @@
-import { build, emptyDir } from '@deno/dnt';
+// Credit @lukeed https://github.com/lukeed/empathic/blob/main/scripts/build.ts
 
-await emptyDir('./npm');
+// Publish:
+//   -> edit package.json version
+//   -> edit deno.json version
+//   $ git commit "release: x.x.x"
+//   $ git tag "vx.x.x"
+//   $ git push origin main --tags
+//   #-> CI builds w/ publish
 
-await build({
-	entryPoints: [
-		'./mod.ts',
-		{
-			name: './traceparent',
-			path: './traceparent.ts',
+import oxc from 'npm:oxc-transform@^0.25';
+import { join, resolve } from '@std/path';
+
+import denoJson from '../deno.json' with { type: 'json' };
+
+const outdir = resolve('npm');
+
+let Inputs;
+if (typeof denoJson.exports === 'string') Inputs = { '.': denoJson.exports };
+else Inputs = denoJson.exports;
+
+async function transform(name: string, filename: string) {
+	if (name === '.') name = 'index';
+	name = name.replace(/^\.\//, '');
+
+	let entry = resolve(filename);
+	let source = await Deno.readTextFile(entry);
+
+	let xform = oxc.transform(entry, source, {
+		typescript: {
+			onlyRemoveTypeImports: true,
+			declaration: true,
 		},
-		{
-			name: './tracestate',
-			path: './tracestate.ts',
-		},
-	],
-	outDir: './npm',
-	shims: {
-		deno: 'dev',
-	},
+	});
 
-	declaration: 'separate',
-	declarationMap: false,
-	scriptModule: 'cjs',
-	typeCheck: 'both',
-	test: false,
+	if (xform.errors.length > 0) bail('transform', xform.errors);
 
-	importMap: 'deno.json',
+	let outfile = `${outdir}/${name}.d.mts`;
+	console.log('> writing "%s" file', outfile);
+	await Deno.writeTextFile(outfile, xform.declaration!);
 
-	package: {
-		name: 'tctx',
-		version: Deno.args[0],
-		description: 'W3C Trace Contexts made simple',
-		repository: 'maraisr/tctx',
-		license: 'MIT',
-		author: {
-			name: 'Marais Rososuw',
-			email: 'me@marais.dev',
-			url: 'https://marais.io',
-		},
-		keywords: [
-			'tracecontext',
-			'traceparent',
-			'distributed',
-			'tracing',
-			'w3c',
-		],
-	},
+	outfile = `${outdir}/${name}.mjs`;
+	console.log('> writing "%s" file', outfile);
+	await Deno.writeTextFile(outfile, xform.sourceText);
+}
 
-	compilerOptions: {
-		target: 'ES2022',
-		lib: ['ES2022', 'WebWorker'],
-	},
+if (exists(outdir)) {
+	console.log('! removing "npm" directory');
+	await Deno.remove(outdir, { recursive: true });
+}
+await Deno.mkdir(outdir);
 
-	filterDiagnostic(diag) {
-		let txt = diag.messageText.toString();
-		return !txt.includes(
-			// ignore type error for missing Deno built-in information
-			`Type 'ReadableStream<string>' must have a '[Symbol.asyncIterator]()' method that returns an async iterator`,
-		);
-	},
+for (let [name, filename] of Object.entries(Inputs)) await transform(name, filename);
 
-	async postBuild() {
-		await Deno.copyFile('license', 'npm/license');
-		await Deno.copyFile('readme.md', 'npm/readme.md');
-	},
-});
+await copy('package.json');
+await copy('readme.md');
+await copy('license');
+
+// ---
+
+function bail(label: string, errors: string[]): never {
+	console.error('[%s] error(s)\n', label, errors.join(''));
+	Deno.exit(1);
+}
+
+function exists(path: string) {
+	try {
+		Deno.statSync(path);
+		return true;
+	} catch (_) {
+		return false;
+	}
+}
+
+function copy(file: string) {
+	if (exists(file)) {
+		let outfile = join(outdir, file);
+		console.log('> writing "%s" file', outfile);
+		return Deno.copyFile(file, outfile);
+	}
+}
