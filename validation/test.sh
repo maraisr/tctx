@@ -6,7 +6,7 @@ python3 --version
 
 pushd $(dirname $0) > /dev/null
 
-deno run -A test_server.ts &
+deno run --allow-net test_server.ts &
 deno_pid=$!
 trap "kill $deno_pid" EXIT
 
