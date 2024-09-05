@@ -3,7 +3,6 @@
 set -euo pipefail
 
 python3 --version
-echo -e "Node $(node --version)"
 
 pushd $(dirname $0) > /dev/null
 
