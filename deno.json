@@ -41,8 +41,8 @@
 			"readme.md"
 		],
 		"exclude": [
-			"*.test.ts",
-			"*.bench.ts"
+			"**/*.test.ts",
+			"**/*.bench.ts"
 		]
 	}
 }
