@@ -1,6 +1,6 @@
 import { assert, assertEquals, assertInstanceOf, assertMatch, assertNotEquals } from '@std/assert';
 
-import * as lib from './traceparent.ts';
+import * as lib from '../lib/traceparent.ts';
 
 function is_valid_id(id: string) {
 	assertMatch(

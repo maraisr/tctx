@@ -1,4 +1,4 @@
-import { random as r } from 'npm:@lukeed/csprng@^1';
+import { random as r } from '@lukeed/csprng';
 
 /**
  * A simple implementation of the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification level 2}.

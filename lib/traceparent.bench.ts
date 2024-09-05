@@ -2,7 +2,7 @@ import { suite } from 'npm:@marais/bench';
 import TraceParent from 'npm:traceparent';
 import * as TraceContext from 'npm:trace-context';
 
-import * as tctx from '../traceparent.ts';
+import * as tctx from './traceparent.ts';
 
 import { randomBytes } from 'node:crypto';
 import { Buffer } from 'node:buffer';

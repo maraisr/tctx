@@ -2,7 +2,6 @@
 	"version": "0.2.3",
 	"name": "@mr/tracecontext",
 	"exports": {
-		".": "./mod.ts",
 		"./traceparent": "./traceparent.ts",
 		"./tracestate": "./tracestate.ts"
 	},
@@ -10,8 +9,8 @@
 		"build": "deno run -A scripts/build.ts"
 	},
 	"imports": {
-		"@deno/dnt": "jsr:@deno/dnt@^0.41.1",
-		"@std/assert": "jsr:@std/assert@^0.221.0"
+		"@std/assert": "jsr:@std/assert@^1",
+		"@lukeed/csprng": "npm:@lukeed/csprng@^1"
 	},
 	"lock": false,
 	"lint": {
@@ -36,12 +35,13 @@
 	],
 	"publish": {
 		"include": [
-			"*.ts",
+			"lib/*.ts",
 			"license",
 			"readme.md"
 		],
 		"exclude": [
-			"*.test.ts"
+			"*.test.ts",
+			"*.bench.ts"
 		]
 	}
 }

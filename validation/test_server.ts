@@ -1,5 +1,5 @@
-import * as traceparent from '../traceparent.ts';
-import * as tracestate from '../tracestate.ts';
+import * as traceparent from '../lib/traceparent.ts';
+import * as tracestate from '../lib/tracestate.ts';
 
 Deno.serve({
 	port: 8000,
