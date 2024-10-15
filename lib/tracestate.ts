@@ -42,7 +42,7 @@
  * The Tracestate type represents a W3C Trace Context tracestate header, implemented as a ring buffer using a javascript {@link Map}.
  */
 class Tracestate extends Map {
-	set(key: string, value: unknown): this {
+	override set(key: string, value: unknown): this {
 		if (!valid_key(key) || !valid_value(value)) throw new TypeError('Invalid key or value');
 		key = key.trim();
 
@@ -52,7 +52,7 @@ class Tracestate extends Map {
 		return super.set(key, value);
 	}
 
-	toString(): string {
+	override toString(): string {
 		let o = '', c = 0;
 		let els = [...this].reverse();
 		while (c < Math.min(32, els.length) && (o += `${els[c][0]}=${els[c++][1]},`));
