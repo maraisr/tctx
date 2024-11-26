@@ -47,14 +47,14 @@ fetch('/api', {
 import * as traceparent from 'tctx/traceparent';
 import * as tracestate from 'tctx/tracestate';
 
-const parent_key = traceparent.parse(request.headers.traceparent);
-const parent_state = tracestate.parse(request.headers.tracestate);
-parent_state.set('vendor', 'value');
+const parent = traceparent.parse(request.headers.traceparent);
+const state = tracestate.parse(request.headers.tracestate);
+state.set('vendor', 'value');
 
 fetch('/downstream', {
 	headers: {
 		traceparent: parent.child(),
-		tracestate: parent_state,
+		tracestate: state,
 	},
 });
 ```
