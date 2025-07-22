@@ -12,15 +12,16 @@
 		"tracing",
 		"w3c"
 	],
+	"type": "module",
 	"sideEffects": false,
 	"exports": {
 		"./traceparent": {
 			"types": "./traceparent.d.mts",
-			"import": "./traceparent.mjs"
+			"default": "./traceparent.mjs"
 		},
 		"./tracestate": {
 			"types": "./tracestate.d.mts",
-			"import": "./tracestate.mjs"
+			"default": "./tracestate.mjs"
 		},
 		"./package.json": "./package.json"
 	},
