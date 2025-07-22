@@ -1,6 +1,6 @@
 {
 	"name": "tctx",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"repository": "maraisr/tctx",
 	"description": "W3C Trace Contexts made simple",
 	"license": "MIT",
