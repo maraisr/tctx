@@ -4,7 +4,7 @@
 	"repository": "maraisr/tctx",
 	"description": "W3C Trace Contexts made simple",
 	"license": "MIT",
-	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
+	"author": "Marais Rossouw <me@marais.dev> (https://marais.io)",
 	"keywords": [
 		"tracecontext",
 		"traceparent",
