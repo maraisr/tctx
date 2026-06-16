@@ -35,12 +35,9 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ env.DENO_VERSION }}
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
         with:
-          python-version: '3.10'
-          cache: pip
-
-      - run: pip install -r ./validation/requirements.txt
+          enable-cache: true
 
       - name: w3c validation test
         run: ./validation/test.sh
