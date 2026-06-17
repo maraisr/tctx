@@ -176,8 +176,12 @@ export function is_randomed(id: Traceparent): boolean {
 	return (id.flags & FLAG_RANDOM) == FLAG_RANDOM;
 }
 
+// Credit: Thanks @lukeed for this little gem scattered around.
+// See: https://github.com/lukeed/hexoid/blob/a23cb66b42595b3c6c443ca2bbea9aac50504cc9/src/index.js#L1-L2
+//      https://github.com/lukeed/uuid/blob/f6f88ef4183d72ea1266af4922596618931801ae/src/secure.js#L3-L7
+//      https://github.com/lukeed/uid/blob/b93753336bb89e227737f79cb2df59fcd5897662/src/index.js#L1-L2
 let IDX = 256, HEX: string[] = [];
-for (; IDX--;) HEX[IDX] = (IDX + 256).toString(16).substring(1);
+while (IDX--) HEX[IDX] = (IDX + 256).toString(16).substring(1);
 
 function random(size: number) {
 	let a = r(size), i = 0, o = '';
