@@ -40,7 +40,7 @@ jobs:
           enable-cache: true
 
       - name: w3c validation test
-        run: ./validation/test.sh
+        run: ./validation/javascript.sh
 
   dryrun:
     needs: [health, validation]

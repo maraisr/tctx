@@ -2,15 +2,7 @@
 
 set -euo pipefail
 
-uv --version
-
-pushd $(dirname $0) > /dev/null
-
-deno run --allow-net test_server.ts &
-deno_pid=$!
-trap "kill $deno_pid" EXIT
-
-until nc -z localhost 8000; do echo "Waiting for server to open port..."; sleep 1; done;
+pushd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null
 
 export STRICT_LEVEL=2
 export SPEC_LEVEL=2
