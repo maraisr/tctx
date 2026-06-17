@@ -7,8 +7,7 @@
     clippy::needless_pass_by_value,
     clippy::missing_panics_doc,
     clippy::module_name_repetitions,
-    clippy::unused_async,
-    soft_unstable
+    clippy::unused_async
 )]
 
 use anyhow::bail;

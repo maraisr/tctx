@@ -14,3 +14,8 @@ edition = "2018"
 anyhow = "1.0"
 fastrand = "1.8"
 
+[dev-dependencies]
+axum = "0.8"
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread"] }
