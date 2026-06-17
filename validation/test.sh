@@ -12,7 +12,7 @@ trap "kill $deno_pid" EXIT
 
 until nc -z localhost 8000; do echo "Waiting for server to open port..."; sleep 1; done;
 
-export STRICT_LEVEL=1
+export STRICT_LEVEL=2
 export SPEC_LEVEL=2
 
 uv run --no-project --script - http://localhost:8000/test <<'PY' || exit 1

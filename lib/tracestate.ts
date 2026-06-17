@@ -79,6 +79,10 @@ export function make(initial?: Iterable<[string, unknown]> | undefined): Tracest
 /**
  * Parse a tracestate header string into a tracestate instance.
  *
+ * > [!NOTE]
+ * > Parsing is strict, per the {@link https://www.w3.org/TR/trace-context-2/|W3C Trace Context specification},
+ * > a `tracestate` that contains any invalid list-member, or more than 32 list-members, is discarded in its entirety.
+ *
  * @example
  * ```ts
  * let tracestate = parse('key=value,key2=value2');
@@ -95,20 +99,26 @@ export function parse(value: string): Tracestate {
 	let i = 0, c = 0, v: [string, unknown][] = [];
 	let pair: string, pairs = value.split(',');
 
-	// we are in a ring buffer, if the size > 32, we need to break
 	while (i < pairs.length) {
-		pair = pairs[i++];
+		// Optional whitespace (spaces and horizontal tabs) surrounding a list-member is ignored.
+		pair = pairs[i++].replace(/^[ \t]+|[ \t]+$/g, '');
+
+		// Empty and whitespace-only list-members are allowed.
+		if (pair === '') continue;
 
 		let idx = pair.indexOf('=');
-		if (!~idx) continue; // something like: k,v or k=v,,k2=v2
+		// Any malformed list-member discards the entire tracestate.
+		if (!~idx) return make();
 
-		let key = pair.slice(0, idx).toLowerCase().trim();
-		let value = pair.slice(idx + 1).trimRight();
+		let key = pair.slice(0, idx).toLowerCase();
+		let value = pair.slice(idx + 1);
 
-		if (valid_key(key) && valid_value(value)) {
-			v.unshift([key, value]);
-			++c;
-		}
+		if (!valid_key(key) || !valid_value(value)) return make();
+
+		v.unshift([key, value]);
+
+		// A list may contain a maximum of 32 list-members; more discards the entire tracestate.
+		if (++c > 32) return make();
 	}
 
 	return make(v);

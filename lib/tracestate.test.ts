@@ -15,24 +15,29 @@ Deno.test('exports', () => {
 	assertInstanceOf(lib.parse, Function);
 });
 
-Deno.test('should drop oldest key when > 32, during init', () => {
+Deno.test('should keep exactly 32 members when parsing, preserving order', () => {
 	const ts =
-		'bar01=01,bar02=02,bar03=03,bar04=04,bar05=05,bar06=06,bar07=07,bar08=08,bar09=09,bar10=10,bar11=11,bar12=12,bar13=13,bar14=14,bar15=15,bar16=16,bar17=17,bar18=18,bar19=19,bar20=20,bar21=21,bar22=22,bar23=23,bar24=24,bar25=25,bar26=26,bar27=27,bar28=28,bar29=29,bar30=30,bar31=31,bar32=32,bar33=33';
+		'bar01=01,bar02=02,bar03=03,bar04=04,bar05=05,bar06=06,bar07=07,bar08=08,bar09=09,bar10=10,bar11=11,bar12=12,bar13=13,bar14=14,bar15=15,bar16=16,bar17=17,bar18=18,bar19=19,bar20=20,bar21=21,bar22=22,bar23=23,bar24=24,bar25=25,bar26=26,bar27=27,bar28=28,bar29=29,bar30=30,bar31=31,bar32=32';
 	const state = lib.parse(ts);
 	assertEquals(state.size, 32);
-	assert(state.get('bar33') == null);
-	assertEquals(state.get('bar22'), '22');
-	assertEquals(
-		String(state),
-		'bar01=01,bar02=02,bar03=03,bar04=04,bar05=05,bar06=06,bar07=07,bar08=08,bar09=09,bar10=10,bar11=11,bar12=12,bar13=13,bar14=14,bar15=15,bar16=16,bar17=17,bar18=18,bar19=19,bar20=20,bar21=21,bar22=22,bar23=23,bar24=24,bar25=25,bar26=26,bar27=27,bar28=28,bar29=29,bar30=30,bar31=31,bar32=32',
-	);
+	assertEquals(state.get('bar01'), '01');
+	assertEquals(state.get('bar32'), '32');
+	assertEquals(String(state), ts);
 
+	// Adding a member to a full list drops the oldest (right-most) entry.
 	state.set('bar00', 0);
 	assertEquals(state.get('bar00'), 0);
 	assertEquals(
 		String(state),
 		'bar00=0,bar01=01,bar02=02,bar03=03,bar04=04,bar05=05,bar06=06,bar07=07,bar08=08,bar09=09,bar10=10,bar11=11,bar12=12,bar13=13,bar14=14,bar15=15,bar16=16,bar17=17,bar18=18,bar19=19,bar20=20,bar21=21,bar22=22,bar23=23,bar24=24,bar25=25,bar26=26,bar27=27,bar28=28,bar29=29,bar30=30,bar31=31',
 	);
+});
+
+Deno.test('should discard the entire tracestate when parsing more than 32 members', () => {
+	const ts =
+		'bar01=01,bar02=02,bar03=03,bar04=04,bar05=05,bar06=06,bar07=07,bar08=08,bar09=09,bar10=10,bar11=11,bar12=12,bar13=13,bar14=14,bar15=15,bar16=16,bar17=17,bar18=18,bar19=19,bar20=20,bar21=21,bar22=22,bar23=23,bar24=24,bar25=25,bar26=26,bar27=27,bar28=28,bar29=29,bar30=30,bar31=31,bar32=32,bar33=33';
+	const state = lib.parse(ts);
+	assertEquals(state.size, 0);
 });
 
 Deno.test('should drop oldest key when > 32, with set', () => {
@@ -60,12 +65,9 @@ Deno.test('throw for invalid key, with set', () => {
 	assertEquals(state.size, 0);
 });
 
-Deno.test('skip invalid key during parsing', () => {
+Deno.test('discard entire tracestate on invalid key during parsing', () => {
 	const state = lib.parse('bar01=01,bar02=02,_123=03,bar04=04');
-	assertEquals(state.size, 3);
-	assertEquals(state.get('bar01'), '01');
-	assertEquals(state.get('bar02'), '02');
-	assertEquals(state.get('bar04'), '04');
+	assertEquals(state.size, 0);
 });
 
 Deno.test('should correctly parse header with case-insensitive name', () => {
@@ -105,4 +107,55 @@ Deno.test('should truncate entries correctly when exceeding limits', () => {
 	const state = lib.make();
 	for (let i = 1; i <= 35; i++) state.set(`key${i}`, 'a');
 	assertLessOrEqual(state.size, 32);
+});
+
+Deno.test('discard tracestate with illegal vendor key format', () => {
+	for (
+		let header of [
+			'foo@=1,bar=2',
+			'@foo=1,bar=2',
+			'foo@@bar=1,bar=2',
+			'foo@bar@baz=1,bar=2',
+		]
+	) {
+		assertEquals(lib.parse(header).size, 0, header);
+	}
+});
+
+Deno.test('discard tracestate with illegal value', () => {
+	assertEquals(lib.parse('foo=bar=baz').size, 0); // value contains '='
+	assertEquals(lib.parse('foo=,bar=3').size, 0); // empty value
+});
+
+Deno.test('discard tracestate with key over length limit', () => {
+	assertEquals(lib.parse('z'.repeat(256) + '=1').size, 1); // 256 is the max
+	assertEquals(lib.parse('z'.repeat(257) + '=1').size, 0); // 257 is too long
+});
+
+Deno.test('enforce tenant/vendor key length limits', () => {
+	assertEquals(lib.parse('t'.repeat(241) + '@' + 'v'.repeat(14) + '=1').size, 1);
+	assertEquals(lib.parse('t'.repeat(242) + '@v=1').size, 0); // tenant too long
+	assertEquals(lib.parse('t@' + 'v'.repeat(15) + '=1').size, 0); // vendor too long
+});
+
+Deno.test('allow empty and whitespace-only list members', () => {
+	const state = lib.parse('foo=1,,bar=2, \t ,baz=3');
+	assertEquals(state.size, 3);
+	assertEquals(state.get('foo'), '1');
+	assertEquals(state.get('bar'), '2');
+	assertEquals(state.get('baz'), '3');
+});
+
+Deno.test('ignore optional whitespace surrounding list members', () => {
+	const state = lib.parse('foo=1 \t , \t bar=2, \t baz=3');
+	assertEquals(state.size, 3);
+	assertEquals(state.get('foo'), '1');
+	assertEquals(state.get('bar'), '2');
+	assertEquals(state.get('baz'), '3');
+});
+
+Deno.test('duplicated keys are inherited and de-duplicated', () => {
+	assertEquals(String(lib.parse('foo=1,foo=1')), 'foo=1');
+	const last = lib.parse('foo=1,foo=2');
+	assert(String(last) === 'foo=1' || String(last) === 'foo=2');
 });
