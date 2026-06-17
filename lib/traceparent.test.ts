@@ -16,17 +16,17 @@ Deno.test('exports', () => {
 	assertInstanceOf(lib.unsample, Function);
 	assertInstanceOf(lib.is_sampled, Function);
 	assertInstanceOf(lib.is_randomed, Function);
+	assertEquals(typeof lib.FLAG_SAMPLE, 'number');
+	assertEquals(typeof lib.FLAG_RANDOM, 'number');
 });
 
-Deno.test('valid id', () => {
-	is_valid_id(String(lib.make()));
+Deno.test('make :: builds a valid id, sampled + random by default', () => {
+	const id = lib.make();
+	is_valid_id(String(id));
+	assertEquals(id.flags, lib.FLAG_SAMPLE | lib.FLAG_RANDOM);
 });
 
-Deno.test('make id default flags', () => {
-	assertEquals(lib.make().flags, 0b0000011);
-});
-
-Deno.test('parse string', () => {
+Deno.test('parse :: parses a well-formed traceparent', () => {
 	const id = '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01';
 	is_valid_id(id);
 
@@ -37,7 +37,7 @@ Deno.test('parse string', () => {
 	assertEquals(t.flags, 0b00000001);
 });
 
-Deno.test("handle's extra characters", () => {
+Deno.test('parse :: regenerates the trace-id when it contains junk', () => {
 	const parsed = lib.parse(
 		'00-12345678901234567890123456789012.-1234567890123456-01',
 	)!;
@@ -47,7 +47,7 @@ Deno.test("handle's extra characters", () => {
 	assertEquals(parsed.parent_id, '1234567890123456');
 });
 
-Deno.test('handle future version', () => {
+Deno.test('parse :: normalizes a future version to 00', () => {
 	const parsed = lib.parse(
 		'cc-12345678901234567890123456789012-1234567890123456-01',
 	)!;
@@ -55,14 +55,14 @@ Deno.test('handle future version', () => {
 	assertEquals(parsed.version, '00');
 });
 
-Deno.test('handle maximum invalid version', () => {
+Deno.test('parse :: rejects the ff version', () => {
 	const parsed = lib.parse(
 		'ff-12345678901234567890123456789012-1234567890123456-01',
 	);
 	assert(parsed == null);
 });
 
-Deno.test('reject all-zero trace-id', () => {
+Deno.test('parse :: regenerates an all-zero trace-id', () => {
 	const parsed = lib.parse(
 		'00-00000000000000000000000000000000-1234567890123456-01',
 	)!;
@@ -70,7 +70,7 @@ Deno.test('reject all-zero trace-id', () => {
 	assertEquals(parsed.parent_id, '1234567890123456');
 });
 
-Deno.test('reject all-zero parent-id', () => {
+Deno.test('parse :: regenerates an all-zero parent-id (and its trace-id)', () => {
 	const parsed = lib.parse(
 		'00-12345678901234567890123456789012-0000000000000000-01',
 	)!;
@@ -79,7 +79,7 @@ Deno.test('reject all-zero parent-id', () => {
 	assertNotEquals(parsed.parent_id, '0000000000000000');
 });
 
-Deno.test('handle parent-id starting with zeros, but valid', () => {
+Deno.test('parse :: keeps a valid parent-id with leading zeros', () => {
 	const parsed = lib.parse(
 		'00-12345678901234567890123456789012-0000000000a902b7-01',
 	)!;
@@ -87,28 +87,46 @@ Deno.test('handle parent-id starting with zeros, but valid', () => {
 	assertEquals(parsed.parent_id, '0000000000a902b7');
 });
 
-Deno.test('correctly interpret sampled flag', () => {
-	const parsed = lib.parse(
-		'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
-	)!;
-	assert(lib.is_sampled(parsed));
-});
-
-Deno.test('reject illegal trace-flags', () => {
+Deno.test('parse :: rejects non-hex trace-flags', () => {
 	const parsed = lib.parse(
 		'00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-g1',
 	);
 	assert(parsed == null);
 });
 
-Deno.test('reject extra dashes in traceparent', () => {
+Deno.test('parse :: rejects a value shorter than 55 characters', () => {
+	assert(lib.parse('00-too-short-01') == null);
+});
+
+Deno.test('parse :: rejects a value containing an underscore', () => {
+	const parsed = lib.parse(
+		'00-1234567890123456789012345678901_-1234567890123456-01',
+	);
+	assert(parsed == null);
+});
+
+Deno.test('parse :: rejects a version longer than 2 characters', () => {
+	const parsed = lib.parse(
+		'000-12345678901234567890123456789012-1234567890123456-01',
+	);
+	assert(parsed == null);
+});
+
+Deno.test('parse :: rejects trace-flags that are not exactly 2 characters', () => {
+	const parsed = lib.parse(
+		'00-12345678901234567890123456789012-1234567890123456-001',
+	);
+	assert(parsed == null);
+});
+
+Deno.test('parse :: rejects extra dashes', () => {
 	const parsed = lib.parse(
 		'00-123456-78901234567890123456789012-1234567890123456-01',
 	);
 	assert(parsed == null);
 });
 
-Deno.test('handle OWS in traceparent', () => {
+Deno.test('parse :: trims surrounding whitespace', () => {
 	const parsed = lib.parse(
 		' 00-12345678901234567890123456789012-1234567890123456-01 ',
 	)!;
@@ -119,87 +137,41 @@ Deno.test('handle OWS in traceparent', () => {
 	assertEquals(parsed.flags, 0b00000001);
 });
 
-Deno.test('child :: create', () => {
+Deno.test('child :: shares the trace-id, but gets a fresh parent-id', () => {
 	const parent = lib.make();
 	const child = parent.child();
-	is_valid_id(String(parent));
 	is_valid_id(String(child));
 
-	assertNotEquals(String(parent), String(child));
+	assertEquals(child.version, parent.version);
+	assertEquals(child.trace_id, parent.trace_id);
+	assertNotEquals(child.parent_id, parent.parent_id);
 });
 
-Deno.test('child :: sampled by deafult, so should be on children', () => {
-	const parent = lib.make();
+Deno.test('child :: inherits flags from its parent', () => {
+	const sampled = lib.make();
+	assert(lib.is_sampled(sampled.child()));
+	assert(lib.is_randomed(sampled.child()));
 
-	const child = parent.child();
-	is_valid_id(String(child));
-	is_valid_id(String(parent));
-
-	assert(lib.is_sampled(parent));
-	assert(lib.is_sampled(child));
-});
-
-Deno.test('child :: random is rippled into children (false case)', () => {
-	const id = '00-12345678912345678912345678912345-00f067aa0ba902b7-01';
-	is_valid_id(id);
-
-	const parent = lib.parse(id)!;
-	assert(lib.is_randomed(parent) === false);
-
-	const child = parent.child();
-	assert(lib.is_randomed(child) === false);
-});
-
-Deno.test('child :: random is rippled into children (true case)', () => {
-	const id = '00-12345678912345678912345678912345-00f067aa0ba902b7-03';
-	is_valid_id(id);
-
-	const parent = lib.parse(id)!;
-	assert(lib.is_randomed(parent));
-
-	const child = parent.child();
-	assert(lib.is_randomed(child));
-});
-
-Deno.test('child :: flag behaviour on children', () => {
-	const parent = lib.make();
-
-	assert(lib.is_sampled(parent));
-	assert(lib.is_randomed(parent));
-
-	const child = parent.child();
-	assert(lib.is_sampled(child));
-	assert(lib.is_randomed(child));
-
-	const child2 = child.child();
-	lib.unsample(child2);
-	assert(lib.is_sampled(child2) === false);
-	assert(lib.is_sampled(child));
-	assert(lib.is_sampled(parent));
-
-	const child3 = child2.child();
-	assert(lib.is_sampled(child3) === false);
-	assert(lib.is_sampled(child2) === false);
-
-	const parent2 = lib.parse(
+	const flat = lib.parse(
 		'00-12345678912345678912345678912345-1111111111111111-00',
 	)!;
-	assert(lib.is_sampled(parent2) === false);
-	assert(lib.is_randomed(parent2) === false);
-
-	const child4 = parent2.child();
-	assert(lib.is_sampled(child4) === false); // it should be inherited
-	assert(lib.is_randomed(child4) === false);
-
-	const parent3 = lib.parse(
-		'00-12345678912345678912345678912345-1111111111111111-01',
-	)!;
-
-	const child5 = parent3.child();
-	assert(lib.is_sampled(child5)); // it should be inherited
+	assert(lib.is_sampled(flat.child()) === false);
+	assert(lib.is_randomed(flat.child()) === false);
 });
 
-Deno.test('util :: is_sampled', () => {
+Deno.test("child :: flag changes don't ripple back to the parent", () => {
+	const parent = lib.make();
+	const child = parent.child();
+
+	lib.unsample(child);
+	assert(lib.is_sampled(child) === false);
+	assert(lib.is_sampled(parent)); // parent is left untouched
+
+	// but a child created after the change inherits the new state
+	assert(lib.is_sampled(child.child()) === false);
+});
+
+Deno.test('is_sampled :: reflects the sample flag bit', () => {
 	const id = lib.make();
 	id.flags = lib.FLAG_SAMPLE;
 	assert(lib.is_sampled(id));
@@ -208,7 +180,25 @@ Deno.test('util :: is_sampled', () => {
 	assert(lib.is_sampled(id) === false);
 });
 
-Deno.test('util :: is_random', () => {
+Deno.test('sample :: sets the sample flag', () => {
+	const id = lib.parse(
+		'00-12345678901234567890123456789012-1234567890123456-00',
+	)!;
+	assert(lib.is_sampled(id) === false);
+	lib.sample(id);
+	assert(lib.is_sampled(id));
+});
+
+Deno.test('unsample :: clears the sample flag', () => {
+	const id = lib.parse(
+		'00-12345678901234567890123456789012-1234567890123456-01',
+	)!;
+	assert(lib.is_sampled(id));
+	lib.unsample(id);
+	assert(lib.is_sampled(id) === false);
+});
+
+Deno.test('is_randomed :: reflects the random flag bit', () => {
 	const id = lib.make();
 	id.flags = lib.FLAG_RANDOM | lib.FLAG_SAMPLE;
 	assert(lib.is_randomed(id));
