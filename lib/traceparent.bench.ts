@@ -1,5 +1,6 @@
-import TraceParent from 'npm:traceparent';
-import * as TraceContext from 'npm:trace-context';
+// deno-lint-ignore-file no-import-prefix
+import TraceParent from 'npm:traceparent@latest';
+import * as TraceContext from 'npm:trace-context@latest';
 
 import * as tctx from './traceparent.ts';
 

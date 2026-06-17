@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-import-prefix
+
 // Credit @lukeed https://github.com/lukeed/empathic/blob/main/scripts/build.ts
 
 // Publish:

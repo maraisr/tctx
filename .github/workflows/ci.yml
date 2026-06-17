@@ -6,15 +6,15 @@ on:
     tags: ['v**']
 
 env:
-  DENO_VERSION: 2.1.6
+  DENO_VERSION: 2.8.3
 
 jobs:
   health:
-    name: Health
+    name: health
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.3
         with:
           deno-version: ${{ env.DENO_VERSION }}
 
@@ -26,16 +26,16 @@ jobs:
       - run: deno coverage
 
   validation:
-    name: w3c Validation
+    name: w3c validation
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           submodules: recursive
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.3
         with:
           deno-version: ${{ env.DENO_VERSION }}
-      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+      - uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           enable-cache: true
 
@@ -44,15 +44,15 @@ jobs:
 
   dryrun:
     needs: [health, validation]
-    name: 'Publish (dry run)'
+    name: 'publish (dry run)'
     if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.3
         with:
           deno-version: ${{ env.DENO_VERSION }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
@@ -66,18 +66,18 @@ jobs:
   # https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages#publishing-packages-to-the-npm-registry
   publish:
     needs: [health, validation]
-    name: Publish
+    name: publish
     runs-on: ubuntu-24.04-arm
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: read
       id-token: write # -> authentication
     steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.3
         with:
           deno-version: ${{ env.DENO_VERSION }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
