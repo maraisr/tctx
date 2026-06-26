@@ -14,6 +14,8 @@
 		"@std/path": "jsr:@std/path@^1",
 		"@lukeed/csprng": "npm:@lukeed/csprng@^1"
 	},
+	"nodeModulesDir": "auto",
+	"minimumDependencyAge": "P3D",
 	"lock": false,
 	"lint": {
 		"rules": {
@@ -21,7 +23,9 @@
 				"no-var",
 				"prefer-const",
 				"no-cond-assign",
-				"no-inner-declarations"
+				"no-inner-declarations",
+				"no-explicit-any",
+				"no-fallthrough"
 			]
 		}
 	},
