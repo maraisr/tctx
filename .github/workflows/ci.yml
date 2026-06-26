@@ -54,11 +54,13 @@ jobs:
           deno-version: ${{ env.DENO_VERSION }}
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
-          node-version: 20
+          node-version: 26
           registry-url: 'https://registry.npmjs.org'
 
       - run: deno task build
-      - run: npm publish --dry-run
+      - run: |
+          npm version patch
+          npm stage publish --dry-run
         working-directory: npm
       - run: deno publish --no-check --dry-run
 
@@ -79,7 +81,7 @@ jobs:
           deno-version: ${{ env.DENO_VERSION }}
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
-          node-version: 20
+          node-version: 26
           registry-url: 'https://registry.npmjs.org'
 
       - run: deno task build
@@ -90,10 +92,10 @@ jobs:
 
       - name: 'Publish → npm'
         if: ${{ !contains(github.ref, '-next.') }}
-        run: npm publish --provenance --access public
+        run: npm stage publish --provenance --access public
         working-directory: npm
 
       - name: 'Publish → npm (pre-release)'
         if: ${{ contains(github.ref, '-next.') }}
-        run: npm publish --tag next --provenance --access public
+        run: npm stage publish --tag next --provenance --access public
         working-directory: npm
