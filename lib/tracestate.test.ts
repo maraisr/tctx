@@ -72,17 +72,11 @@ Deno.test('set :: moves an updated key to the front', () => {
 	assertEquals(String(state), 'vendor1=newValue,vendor2=value2');
 });
 
-Deno.test('parse :: discards on an illegal vendor key format', () => {
-	for (
-		let header of [
-			'foo@=1,bar=2',
-			'@foo=1,bar=2',
-			'foo@@bar=1,bar=2',
-			'foo@bar@baz=1,bar=2',
-		]
-	) {
-		assertEquals(lib.parse(header).size, 0, header);
-	}
+Deno.test('parse :: treats @ as a regular keychar, discarding only a leading @', () => {
+	assertEquals(lib.parse('foo@=1,bar=2').size, 2);
+	assertEquals(lib.parse('foo@@bar=1,bar=2').size, 2);
+	assertEquals(lib.parse('foo@bar@baz=1,bar=2').size, 2);
+	assertEquals(lib.parse('@foo=1,bar=2').size, 0);
 });
 
 Deno.test('parse :: discards on an illegal value', () => {
@@ -98,12 +92,9 @@ Deno.test('parse :: discards on a member missing "="', () => {
 Deno.test('parse :: enforces the key length limit', () => {
 	assertEquals(lib.parse('z'.repeat(256) + '=1').size, 1); // 256 is the max
 	assertEquals(lib.parse('z'.repeat(257) + '=1').size, 0); // 257 is too long
-});
-
-Deno.test('parse :: enforces tenant/vendor key length limits', () => {
 	assertEquals(lib.parse('t'.repeat(241) + '@' + 'v'.repeat(14) + '=1').size, 1);
-	assertEquals(lib.parse('t'.repeat(242) + '@v=1').size, 0); // tenant too long
-	assertEquals(lib.parse('t@' + 'v'.repeat(15) + '=1').size, 0); // vendor too long
+	assertEquals(lib.parse('t'.repeat(242) + '@v=1').size, 1);
+	assertEquals(lib.parse('t@' + 'v'.repeat(15) + '=1').size, 1);
 });
 
 Deno.test('parse :: allows empty and whitespace-only members', () => {

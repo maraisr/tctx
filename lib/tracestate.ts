@@ -130,6 +130,5 @@ function valid_value(value: unknown) {
 }
 
 function valid_key(key: string) {
-	return /^[a-z0-9][_0-9a-z-*/]{0,255}$/.test(key) ||
-		/^[a-z0-9][_0-9a-z-*/]{0,240}@[a-z][_0-9a-z-*/]{0,13}$/.test(key);
+	return /^[a-z0-9][-_0-9a-z*/@]{0,255}$/.test(key);
 }
